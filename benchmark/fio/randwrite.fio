@@ -1,0 +1,8 @@
+[global]
+include global.fio
+
+[Random Write]
+rw=randrw
+rwmixread=0
+
+iodepth=1

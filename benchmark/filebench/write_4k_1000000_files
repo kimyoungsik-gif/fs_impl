@@ -1,0 +1,13 @@
+define fileset name="testF",entries=10000,filesize=4k,prealloc,path="/mnt/fuse" 
+
+eventgen rate = 1000
+
+define process name="readerP",instances=1 {
+	thread name="readerT",instances=1 {
+		flowop eventlimit name="opslimiter"
+		flowop openfile name="openOP", filesetname="testF"
+		flowop writewholefile name="writeOP", filesetname="testF"
+		flowop closefile name="closeOP"
+	}
+}
+run 10

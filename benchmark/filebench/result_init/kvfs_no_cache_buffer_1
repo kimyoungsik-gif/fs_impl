@@ -1,0 +1,1624 @@
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_create_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Simple way to create a file.  Start off with a zero length file, and issue
+# 1024 ($count) 1MB appends.
+
+set $dir=/mnt/fuse
+set $count=2048
+set $iosize=1m
+set $nthreads=1
+set $sync=false
+
+set mode quit alldone
+
+define file name=largefile,path=$dir,size=0,prealloc
+
+define process name=filecreater,instances=1
+{
+  thread name=filecreaterthread,memsize=10m,instances=$nthreads
+  {
+    flowop appendfile name=append-file,filename=largefile,dsync=$sync,iosize=$iosize,directio
+    flowop finishoncount name=finish,value=$count
+  }
+}
+
+run 1000
+
+echo  "FileMicro-Create Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing largefile tree (if exists)
+0.008: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.009: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.009: Population and pre-allocation of filesets completed
+0.009: Starting 1 filecreater instances
+1.010: Running...
+5.010: Run took 4 seconds...
+5.011: Per-Operation Breakdown
+finish               1024ops      256ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+append-file          1025ops      256ops/s 256.0mb/s    2.674ms/op [0.379ms - 7.932ms]
+5.011: IO Summary:  1025 ops 256.203 ops/s 0/256 rd/wr 256.0mb/s 2.674ms/op
+5.011: Shutting down processes
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_create.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Simple way to create a file.  Start off with a zero length file, and issue
+# 1024 ($count) 1MB appends.
+
+set $dir=/mnt/fuse
+set $count=2048
+set $iosize=1m
+set $nthreads=1
+set $sync=false
+
+set mode quit alldone
+
+define file name=largefile,path=$dir,size=0,prealloc
+
+define process name=filecreater,instances=1
+{
+  thread name=filecreaterthread,memsize=10m,instances=$nthreads
+  {
+    flowop appendfile name=append-file,filename=largefile,dsync=$sync,iosize=$iosize
+    flowop finishoncount name=finish,value=$count
+  }
+}
+
+run 1000
+
+echo  "FileMicro-Create Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing largefile tree (if exists)
+0.008: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.009: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.009: Population and pre-allocation of filesets completed
+0.009: Starting 1 filecreater instances
+1.010: Running...
+4.010: Run took 3 seconds...
+4.010: Per-Operation Breakdown
+finish               1024ops      341ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+append-file          1025ops      342ops/s 341.3mb/s    1.077ms/op [0.383ms - 42.685ms]
+4.010: IO Summary:  1025 ops 341.601 ops/s 0/342 rd/wr 341.3mb/s 1.077ms/op
+4.010: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	9239
+Metadata write Count: 	8199
+data     Read  Count: 	8191
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_createfiles_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Creates a fileset with 20,000 entries ($nfiles), but only preallocates
+# 50% of the files.  Each file's size is set via a gamma distribution with
+# a median size of 1KB ($filesize).
+#
+# The single thread then creates a new file and writes the whole file with
+# 1MB I/Os.  The thread stops after 5000 files ($count/num of flowops) have
+# been created and written to.
+
+set $dir=/mnt/fuse
+set $count=20000
+set $filesize=1k
+set $iosize=1m
+set $meandirwidth=100000
+set $nfiles=20000
+set $nthreads=1
+
+set mode quit alldone
+
+define fileset name=bigfileset,path=$dir,size=$filesize,entries=$nfiles,dirwidth=$meandirwidth,prealloc=50
+
+define process name=filecreate,instances=1
+{
+  thread name=filecreatethread,memsize=10m,instances=$nthreads
+  {
+    flowop createfile name=createfile1,filesetname=bigfileset,fd=1
+    flowop writewholefile name=writefile1,filesetname=bigfileset,fd=1,iosize=$iosize,directio
+    flowop closefile name=closefile1,fd=1
+    flowop finishoncount name=finish,value=$count
+  }
+}
+
+run 1000
+
+echo  "FileMicro-Createfiles Version 2.2 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.011: bigfileset populated: 20000 files, avg. dir. width = 100000, avg. dir. depth = 0.9, 0 leafdirs, 19.531MB total size
+0.011: Removing bigfileset tree (if exists)
+0.013: Pre-allocating directories in bigfileset tree
+0.013: Pre-allocating files in bigfileset tree
+0.450: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.450: Population and pre-allocation of filesets completed
+0.451: Starting 1 filecreate instances
+1.452: Running...
+4.452: Run took 3 seconds...
+4.452: Per-Operation Breakdown
+finish               5001ops     1667ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+closefile1           5001ops     1667ops/s   0.0mb/s    0.047ms/op [0.033ms - 6.365ms]
+writefile1           5001ops     1667ops/s   1.6mb/s    0.060ms/op [0.045ms - 0.469ms]
+createfile1          5001ops     1667ops/s   0.0mb/s    0.177ms/op [0.143ms - 4.062ms]
+4.452: IO Summary: 15003 ops 4999.925 ops/s 0/1667 rd/wr   1.6mb/s 0.095ms/op
+4.452: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	109210
+Metadata write Count: 	44660
+data     Read  Count: 	0
+data     write Count: 	0
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_createfiles.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Creates a fileset with 20,000 entries ($nfiles), but only preallocates
+# 50% of the files.  Each file's size is set via a gamma distribution with
+# a median size of 1KB ($filesize).
+#
+# The single thread then creates a new file and writes the whole file with
+# 1MB I/Os.  The thread stops after 5000 files ($count/num of flowops) have
+# been created and written to.
+
+set $dir=/mnt/fuse
+set $count=20000
+set $filesize=1k
+set $iosize=1m
+set $meandirwidth=100000
+set $nfiles=20000
+set $nthreads=1
+
+set mode quit alldone
+
+define fileset name=bigfileset,path=$dir,size=$filesize,entries=$nfiles,dirwidth=$meandirwidth,prealloc=50
+
+define process name=filecreate,instances=1
+{
+  thread name=filecreatethread,memsize=10m,instances=$nthreads
+  {
+    flowop createfile name=createfile1,filesetname=bigfileset,fd=1
+    flowop writewholefile name=writefile1,filesetname=bigfileset,fd=1,iosize=$iosize
+    flowop closefile name=closefile1,fd=1
+    flowop finishoncount name=finish,value=$count
+  }
+}
+
+run 1000
+
+echo  "FileMicro-Createfiles Version 2.2 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.007: Populating and pre-allocating filesets
+0.027: bigfileset populated: 20000 files, avg. dir. width = 100000, avg. dir. depth = 0.9, 0 leafdirs, 19.531MB total size
+0.027: Removing bigfileset tree (if exists)
+0.030: Pre-allocating directories in bigfileset tree
+0.030: Pre-allocating files in bigfileset tree
+0.761: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.761: Population and pre-allocation of filesets completed
+0.761: Starting 1 filecreate instances
+1.762: Running...
+3.763: Run took 2 seconds...
+3.763: Per-Operation Breakdown
+finish               5001ops     2500ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+closefile1           5001ops     2500ops/s   0.0mb/s    0.011ms/op [0.007ms - 2.404ms]
+writefile1           5001ops     2500ops/s   2.4mb/s    0.014ms/op [0.009ms - 0.415ms]
+createfile1          5001ops     2500ops/s   0.0mb/s    0.042ms/op [0.030ms - 0.795ms]
+3.763: IO Summary: 15003 ops 7499.258 ops/s 0/2500 rd/wr   2.4mb/s 0.022ms/op
+3.763: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	109209
+Metadata write Count: 	44660
+data     Read  Count: 	0
+data     write Count: 	0
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_createrand_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded asynchronous ($sync) random appends (random I/Os
+# in the range of [1B - 1MB]) to a 1GB file.
+# Does a fsync after 10 ($iters) appends.
+# Stops after 1GB ($bytes) has been appended/written.
+
+set $dir=/mnt/fuse
+set $bytes=1g
+set $iosize=1m
+set $iters=10
+set $nthreads=1
+set $sync=false
+
+set mode quit alldone
+
+define file name=largefile,path=$dir,size=0,prealloc
+
+define process name=filecreater,instances=1
+{
+  thread name=filecreaterthread,memsize=10m,instances=$nthreads
+  {
+    flowop appendfilerand name=append-file,filename=largefile,dsync=$sync,iosize=$iosize,iters=$iters,directio
+    flowop fsync name=sync
+    flowop finishonbytes name=finish,value=$bytes
+  }
+}
+
+run 1000
+
+echo  "FileMicro-CreateRand Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.006: Populating and pre-allocating filesets
+0.007: Removing largefile tree (if exists)
+0.011: Pre-allocating directories in largefile tree
+0.012: Pre-allocating files in largefile tree
+0.013: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.013: Population and pre-allocation of filesets completed
+0.013: Starting 1 filecreater instances
+1.017: Running...
+7.017: Run took 6 seconds...
+7.018: Per-Operation Breakdown
+finish               208ops       35ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+sync                 208ops       35ops/s   0.0mb/s    0.005ms/op [0.001ms - 0.075ms]
+append-file          2081ops      347ops/s 170.8mb/s    2.357ms/op [0.079ms - 8.902ms]
+7.018: IO Summary:  2289 ops 381.446 ops/s 0/347 rd/wr 170.8mb/s 2.144ms/op
+7.018: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	7356
+Metadata write Count: 	9255
+data     Read  Count: 	105432
+data     write Count: 	271644
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_createrand.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded asynchronous ($sync) random appends (random I/Os
+# in the range of [1B - 1MB]) to a 1GB file.
+# Does a fsync after 10 ($iters) appends.
+# Stops after 1GB ($bytes) has been appended/written.
+
+set $dir=/mnt/fuse
+set $bytes=1g
+set $iosize=1m
+set $iters=10
+set $nthreads=1
+set $sync=false
+
+set mode quit alldone
+
+define file name=largefile,path=$dir,size=0,prealloc
+
+define process name=filecreater,instances=1
+{
+  thread name=filecreaterthread,memsize=10m,instances=$nthreads
+  {
+    flowop appendfilerand name=append-file,filename=largefile,dsync=$sync,iosize=$iosize,iters=$iters
+    flowop fsync name=sync
+    flowop finishonbytes name=finish,value=$bytes
+  }
+}
+
+run 1000
+
+echo  "FileMicro-CreateRand Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing largefile tree (if exists)
+0.007: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filecreater instances
+1.009: Running...
+4.010: Run took 3 seconds...
+4.010: Per-Operation Breakdown
+finish               208ops       69ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+sync                 208ops       69ops/s   0.0mb/s    0.002ms/op [0.001ms - 0.045ms]
+append-file          2081ops      694ops/s 341.6mb/s    0.581ms/op [0.019ms - 31.727ms]
+4.010: IO Summary:  2289 ops 762.826 ops/s 0/694 rd/wr 341.6mb/s 0.529ms/op
+4.010: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	11352
+Metadata write Count: 	9256
+data     Read  Count: 	9248
+data     write Count: 	271646
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rread_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded random reads (2KB I/Os) on a 1GB file.
+# Stops after 128MB ($bytes) has been read.
+
+set $dir=/mnt/fuse
+set $bytes=128m
+set $cached=false
+set $filesize=1g
+set $iosize=2k
+set $iters=1
+set $nthreads=1
+
+set mode quit alldone
+
+define file name=bigfile1,path=$dir,size=$filesize,prealloc,reuse
+
+define process name=filereader,instances=1
+{
+  thread name=filereaderthread,memsize=10m,instances=$nthreads
+  {
+    flowop read name=write-file,filesetname=bigfile1,random,iosize=$iosize,iters=$iters,directio
+    flowop finishonbytes name=finish,value=$bytes
+  }
+}
+
+run 1000
+
+echo  "FileMicro-ReadRand Version 2.2 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.006: Removing bigfile1 tree (if exists)
+0.008: Pre-allocating directories in bigfile1 tree
+0.008: Pre-allocating files in bigfile1 tree
+0.931: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.931: Population and pre-allocation of filesets completed
+0.931: Starting 1 filereader instances
+1.932: Running...
+4.933: Run took 3 seconds...
+4.933: Per-Operation Breakdown
+finish               65537ops    21842ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.004ms]
+write-file           65538ops    21842ops/s  42.7mb/s    0.020ms/op [0.015ms - 49.671ms]
+4.933: IO Summary: 65538 ops 21842.389 ops/s 21842/0 rd/wr  42.7mb/s 0.020ms/op
+4.933: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	139289
+Metadata write Count: 	73736
+data     Read  Count: 	73728
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rread.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded random reads (2KB I/Os) on a 1GB file.
+# Stops after 128MB ($bytes) has been read.
+
+set $dir=/mnt/fuse
+set $bytes=128m
+set $cached=false
+set $filesize=1g
+set $iosize=2k
+set $iters=1
+set $nthreads=1
+
+set mode quit alldone
+
+define file name=bigfile1,path=$dir,size=$filesize,prealloc,reuse
+
+define process name=filereader,instances=1
+{
+  thread name=filereaderthread,memsize=10m,instances=$nthreads
+  {
+    flowop read name=write-file,filesetname=bigfile1,random,iosize=$iosize,iters=$iters
+    flowop finishonbytes name=finish,value=$bytes
+  }
+}
+
+run 1000
+
+echo  "FileMicro-ReadRand Version 2.2 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile1 tree (if exists)
+0.007: Pre-allocating directories in bigfile1 tree
+0.008: Pre-allocating files in bigfile1 tree
+0.968: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.968: Population and pre-allocation of filesets completed
+0.968: Starting 1 filereader instances
+1.969: Running...
+4.969: Run took 3 seconds...
+4.969: Per-Operation Breakdown
+finish               65537ops    21842ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.012ms]
+write-file           65538ops    21843ops/s  42.7mb/s    0.020ms/op [0.001ms - 49.480ms]
+4.969: IO Summary: 65538 ops 21842.687 ops/s 21843/0 rd/wr  42.7mb/s 0.020ms/op
+4.970: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	124005
+Metadata write Count: 	66280
+data     Read  Count: 	126136
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwrite_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded asynchronous ($sync) random writes (2KB I/Os) on a 1GB file.
+# Stops when 128MB ($bytes) has been written.
+
+set $dir=/mnt/fuse
+set $bytes=128m
+set $cached=false
+set $filesize=1g
+set $iosize=2k
+set $iters=1
+set $nthreads=1
+set $sync=false
+
+set mode quit alldone
+
+define file name=bigfile1,path=$dir,size=$filesize,prealloc,reuse
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=$nthreads
+  {
+    flowop write name=write-file,filename=bigfile1,random,dsync=$sync,iosize=$iosize,iters=$iters,directio
+    flowop finishonbytes name=finish,value=$bytes
+  }
+}
+
+run 1000
+
+echo  "FileMicro-WriteRand Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile1 tree (if exists)
+0.007: Pre-allocating directories in bigfile1 tree
+0.008: Pre-allocating files in bigfile1 tree
+0.934: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.934: Population and pre-allocation of filesets completed
+0.934: Starting 1 filewriter instances
+1.935: Running...
+3.936: Run took 2 seconds...
+3.936: Per-Operation Breakdown
+finish               65537ops    32762ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+write-file           65538ops    32763ops/s  64.0mb/s    0.014ms/op [0.011ms - 49.465ms]
+3.936: IO Summary: 65538 ops 32762.841 ops/s 0/32763 rd/wr  64.0mb/s 0.014ms/op
+3.936: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	73753
+Metadata write Count: 	73736
+data     Read  Count: 	73728
+data     write Count: 	335872
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwritedsync_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded synchronous (O_DSYNC) random writes (2KB I/Os) on a 1GB file.
+# Stops when 64K ($count) writes have been done.
+
+set $dir=/mnt/fuse
+set $count=131072
+set $filesize=1g
+set $iosize=2k
+set $iters=1
+set $nthreads=1
+
+set mode quit alldone
+
+define file name=bigfile,path=$dir,size=$filesize,prealloc,reuse
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=$nthreads
+  {
+    flowop write name=write-file,filename=bigfile,random,dsync,iosize=$iosize,iters=$iters,directio
+    flowop finishoncount name=finish,value=$count
+  }
+}
+
+run 1000
+
+echo  "FileMicro-WriteRandDsync Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.007: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.951: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.951: Population and pre-allocation of filesets completed
+0.951: Starting 1 filewriter instances
+1.952: Running...
+3.953: Run took 2 seconds...
+3.953: Per-Operation Breakdown
+finish               65536ops    32762ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.016ms]
+write-file           65537ops    32762ops/s  64.0mb/s    0.014ms/op [0.011ms - 49.603ms]
+3.953: IO Summary: 65537 ops 32762.324 ops/s 0/32762 rd/wr  64.0mb/s 0.014ms/op
+3.953: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	73752
+Metadata write Count: 	73735
+data     Read  Count: 	73727
+data     write Count: 	335871
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwritedsync.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded synchronous (O_DSYNC) random writes (2KB I/Os) on a 1GB file.
+# Stops when 64K ($count) writes have been done.
+
+set $dir=/mnt/fuse
+set $count=131072
+set $filesize=1g
+set $iosize=2k
+set $iters=1
+set $nthreads=1
+
+set mode quit alldone
+
+define file name=bigfile,path=$dir,size=$filesize,prealloc,reuse
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=$nthreads
+  {
+    flowop write name=write-file,filename=bigfile,random,dsync,iosize=$iosize,iters=$iters
+    flowop finishoncount name=finish,value=$count
+  }
+}
+
+run 1000
+
+echo  "FileMicro-WriteRandDsync Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.007: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.920: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.920: Population and pre-allocation of filesets completed
+0.920: Starting 1 filewriter instances
+1.922: Running...
+4.922: Run took 3 seconds...
+4.922: Per-Operation Breakdown
+finish               65536ops    21841ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.012ms]
+write-file           65537ops    21841ops/s  42.7mb/s    0.015ms/op [0.012ms - 78.274ms]
+4.922: IO Summary: 65537 ops 21840.956 ops/s 0/21841 rd/wr  42.7mb/s 0.015ms/op
+4.922: Shutting down processes
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwrite.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded asynchronous ($sync) random writes (2KB I/Os) on a 1GB file.
+# Stops when 128MB ($bytes) has been written.
+
+set $dir=/mnt/fuse
+set $bytes=128m
+set $cached=false
+set $filesize=1g
+set $iosize=2k
+set $iters=1
+set $nthreads=1
+set $sync=false
+
+set mode quit alldone
+
+define file name=bigfile1,path=$dir,size=$filesize,prealloc,reuse
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=$nthreads
+  {
+    flowop write name=write-file,filename=bigfile1,random,dsync=$sync,iosize=$iosize,iters=$iters
+    flowop finishonbytes name=finish,value=$bytes
+  }
+}
+
+run 1000
+
+echo  "FileMicro-WriteRand Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile1 tree (if exists)
+0.008: Pre-allocating directories in bigfile1 tree
+0.008: Pre-allocating files in bigfile1 tree
+0.945: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.945: Population and pre-allocation of filesets completed
+0.945: Starting 1 filewriter instances
+1.950: Running...
+3.950: Run took 2 seconds...
+3.950: Per-Operation Breakdown
+finish               65537ops    32763ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.014ms]
+write-file           65538ops    32764ops/s  64.0mb/s    0.014ms/op [0.011ms - 48.659ms]
+3.950: IO Summary: 65538 ops 32763.856 ops/s 0/32764 rd/wr  64.0mb/s 0.014ms/op
+3.950: Shutting down processes
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwritefsync_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded asynchronous random writes (8KB I/Os) on a 1GB file.
+# A fsync is issued after 16K ($iters) worth of writes.
+# Stops after one ($count) fsync.
+
+set $dir=/mnt/fuse
+set $cached=false
+set $count=1
+set $filesize=1g
+set $iosize=8k
+set $iters=16384
+set $nthreads=1
+
+set mode quit alldone
+
+define file name=bigfile,path=$dir,size=$filesize,prealloc
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=$nthreads
+  {
+    flowop write name=write-file,filename=bigfile,random,iosize=$iosize,iters=$iters,directio
+    flowop fsync name=sync-file
+    flowop finishoncount name=finish,value=$count
+  }
+}
+
+run 1000
+
+echo  "FileMicro-WriteRandFsync Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.007: Pre-allocating directories in bigfile tree
+0.007: Pre-allocating files in bigfile tree
+0.948: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.948: Population and pre-allocation of filesets completed
+0.948: Starting 1 filewriter instances
+1.949: Running...
+3.950: Run took 2 seconds...
+3.950: Per-Operation Breakdown
+finish               1ops        0ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.000ms]
+sync-file            1ops        0ops/s   0.0mb/s    0.012ms/op [0.012ms - 0.012ms]
+write-file           16385ops     8191ops/s  64.0mb/s    0.023ms/op [0.016ms - 50.190ms]
+3.950: IO Summary: 16386 ops 8191.968 ops/s 0/8191 rd/wr  64.0mb/s 0.023ms/op
+3.950: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	24600
+Metadata write Count: 	24583
+data     Read  Count: 	57343
+data     write Count: 	319487
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwritefsync.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded asynchronous random writes (8KB I/Os) on a 1GB file.
+# A fsync is issued after 16K ($iters) worth of writes.
+# Stops after one ($count) fsync.
+
+set $dir=/mnt/fuse
+set $cached=false
+set $count=1
+set $filesize=1g
+set $iosize=8k
+set $iters=16384
+set $nthreads=1
+
+set mode quit alldone
+
+define file name=bigfile,path=$dir,size=$filesize,prealloc
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=$nthreads
+  {
+    flowop write name=write-file,filename=bigfile,random,iosize=$iosize,iters=$iters
+    flowop fsync name=sync-file
+    flowop finishoncount name=finish,value=$count
+  }
+}
+
+run 1000
+
+echo  "FileMicro-WriteRandFsync Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.006: Populating and pre-allocating filesets
+0.007: Removing bigfile tree (if exists)
+0.012: Pre-allocating directories in bigfile tree
+0.013: Pre-allocating files in bigfile tree
+1.179: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+1.179: Population and pre-allocation of filesets completed
+1.179: Starting 1 filewriter instances
+2.180: Running...
+4.180: Run took 2 seconds...
+4.181: Per-Operation Breakdown
+finish               1ops        0ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.000ms]
+sync-file            1ops        0ops/s   0.0mb/s    0.013ms/op [0.013ms - 0.013ms]
+write-file           16385ops     8192ops/s  64.0mb/s    0.025ms/op [0.018ms - 49.038ms]
+4.181: IO Summary: 16386 ops 8192.017 ops/s 0/8192 rd/wr  64.0mb/s 0.025ms/op
+4.181: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	24600
+Metadata write Count: 	24583
+data     Read  Count: 	57343
+data     write Count: 	319487
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_seqread_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded sequential reads (1MB I/Os) on a 1G file.
+
+set $dir=/mnt/fuse
+set $cached=false
+set $filesize=1g
+set $iosize=1m
+set $nthreads=1
+
+set mode quit alldone
+
+define file name=largefile,path=$dir,size=$filesize,prealloc,reuse
+
+define process name=filereader,instances=1
+{
+  thread name=filereaderthread,memsize=10m,instances=$nthreads
+  {
+    flowop read name=seqread-file,filename=largefile,iosize=$iosize,directio
+    flowop finishonbytes name=finish,value=$filesize
+  }
+}
+
+run 1000
+
+echo  "FileMicro-SeqRead Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing largefile tree (if exists)
+0.007: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+1.063: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+1.063: Population and pre-allocation of filesets completed
+1.063: Starting 1 filereader instances
+2.064: Running...
+4.065: Run took 2 seconds...
+4.065: Per-Operation Breakdown
+finish               1026ops      513ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+seqread-file         1027ops      513ops/s 512.4mb/s    0.522ms/op [0.023ms - 49.687ms]
+4.065: IO Summary:  1027 ops 513.351 ops/s 513/0 rd/wr 512.4mb/s 0.522ms/op
+4.065: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	10874
+Metadata write Count: 	17330
+data     Read  Count: 	278680
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_seqread.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded sequential reads (1MB I/Os) on a 1G file.
+
+set $dir=/mnt/fuse
+set $cached=false
+set $filesize=1g
+set $iosize=1m
+set $nthreads=1
+
+set mode quit alldone
+
+define file name=largefile,path=$dir,size=$filesize,prealloc,reuse
+
+define process name=filereader,instances=1
+{
+  thread name=filereaderthread,memsize=10m,instances=$nthreads
+  {
+    flowop read name=seqread-file,filename=largefile,iosize=$iosize
+    flowop finishonbytes name=finish,value=$filesize
+  }
+}
+
+run 1000
+
+echo  "FileMicro-SeqRead Version 2.1 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing largefile tree (if exists)
+0.007: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.939: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.939: Population and pre-allocation of filesets completed
+0.939: Starting 1 filereader instances
+1.940: Running...
+3.941: Run took 2 seconds...
+3.941: Per-Operation Breakdown
+finish               1026ops      513ops/s   0.0mb/s    0.000ms/op [0.001ms - 0.012ms]
+seqread-file         1027ops      513ops/s 512.4mb/s    0.500ms/op [0.021ms - 49.253ms]
+3.941: IO Summary:  1027 ops 513.402 ops/s 513/0 rd/wr 512.4mb/s 0.500ms/op
+3.941: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	10124
+Metadata write Count: 	16391
+data     Read  Count: 	278526
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_seqwrite_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded asynchronous ($sync) sequential writes (1MB I/Os) to
+# a 1GB file.
+# Stops after 1 series of 1024 ($count) writes has been done.
+
+set $dir=/mnt/fuse
+set $cached=false
+set $count=1024
+set $iosize=1m
+set $nthreads=1
+set $sync=false
+
+set mode quit alldone
+
+define file name=bigfile,path=$dir,size=0,prealloc
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=$nthreads
+  {
+    flowop appendfile name=write-file,dsync=$sync,filename=bigfile,iosize=$iosize,iters=$count,directio
+    flowop finishoncount name=finish,value=1
+  }
+}
+
+run 1000
+
+echo  "FileMicro-SeqWrite Version 2.2 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.007: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filewriter instances
+1.009: Running...
+7.010: Run took 6 seconds...
+7.010: Per-Operation Breakdown
+finish               1ops        0ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.000ms]
+write-file           1025ops      171ops/s 170.6mb/s    4.468ms/op [0.704ms - 7.926ms]
+7.010: IO Summary:  1025 ops 170.809 ops/s 0/171 rd/wr 170.6mb/s 4.468ms/op
+7.010: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	2745
+Metadata write Count: 	9129
+data     Read  Count: 	73971
+data     write Count: 	270225
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_seqwrite.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single threaded asynchronous ($sync) sequential writes (1MB I/Os) to
+# a 1GB file.
+# Stops after 1 series of 1024 ($count) writes has been done.
+
+set $dir=/mnt/fuse
+set $cached=false
+set $count=1024
+set $iosize=1m
+set $nthreads=1
+set $sync=false
+
+set mode quit alldone
+
+define file name=bigfile,path=$dir,size=0,prealloc
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=$nthreads
+  {
+    flowop appendfile name=write-file,dsync=$sync,filename=bigfile,iosize=$iosize,iters=$count
+    flowop finishoncount name=finish,value=1
+  }
+}
+
+run 1000
+
+echo  "FileMicro-SeqWrite Version 2.2 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.008: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filewriter instances
+1.009: Running...
+4.010: Run took 3 seconds...
+4.010: Per-Operation Breakdown
+finish               1ops        0ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.000ms]
+write-file           1025ops      342ops/s 341.3mb/s    1.139ms/op [0.377ms - 5.177ms]
+4.010: IO Summary:  1025 ops 341.587 ops/s 0/342 rd/wr 341.3mb/s 1.139ms/op
+4.010: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	9239
+Metadata write Count: 	8199
+data     Read  Count: 	8191
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_writefsync_dir.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single-threaded writes to initially empty file.
+# I/O size is set to 8KB. After every 1024 writes 
+# (i.e., 8MB written) fsync is called.
+# The run finishes after 1GB is fully written.
+
+set $dir=/mnt/fuse
+set $iosize=8k
+set $writeiters=1024
+set $fsynccount=128
+
+set mode quit alldone
+
+define file name=bigfile,path=$dir,size=0,prealloc
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=1
+  {
+    flowop appendfile name=append-file,filename=bigfile,iosize=$iosize,iters=$writeiters,directio
+    flowop fsync name=sync-file
+    flowop finishoncount name=finish,value=128,target=sync-file
+  }
+}
+
+run 1000
+
+echo  "FileMicro-WriteFsync Version 2.1 personality successfully loaded"
+
+run
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.007: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filewriter instances
+1.009: Running...
+6.010: Run took 5 seconds...
+6.010: Per-Operation Breakdown
+finish               128ops       26ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+sync-file            128ops       26ops/s   0.0mb/s    0.001ms/op [0.001ms - 0.013ms]
+append-file          131073ops    26210ops/s 204.8mb/s    0.026ms/op [0.022ms - 5.719ms]
+6.010: IO Summary: 131201 ops 26235.908 ops/s 0/26210 rd/wr 204.8mb/s 0.026ms/op
+6.010: Shutting down processes
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_writefsync.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident	"%Z%%M%	%I%	%E% SMI"
+
+# Single-threaded writes to initially empty file.
+# I/O size is set to 8KB. After every 1024 writes 
+# (i.e., 8MB written) fsync is called.
+# The run finishes after 1GB is fully written.
+
+set $dir=/mnt/fuse
+set $iosize=8k
+set $writeiters=1024
+set $fsynccount=128
+
+set mode quit alldone
+
+define file name=bigfile,path=$dir,size=0,prealloc
+
+define process name=filewriter,instances=1
+{
+  thread name=filewriterthread,memsize=10m,instances=1
+  {
+    flowop appendfile name=append-file,filename=bigfile,iosize=$iosize,iters=$writeiters
+    flowop fsync name=sync-file
+    flowop finishoncount name=finish,value=128,target=sync-file
+  }
+}
+
+run 1000
+
+echo  "FileMicro-WriteFsync Version 2.1 personality successfully loaded"
+
+run
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.006: Removing bigfile tree (if exists)
+0.008: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filewriter instances
+1.009: Running...
+6.010: Run took 5 seconds...
+6.010: Per-Operation Breakdown
+finish               128ops       26ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+sync-file            128ops       26ops/s   0.0mb/s    0.003ms/op [0.002ms - 0.013ms]
+append-file          131073ops    26211ops/s 204.8mb/s    0.028ms/op [0.023ms - 14.023ms]
+6.010: IO Summary: 131201 ops 26236.422 ops/s 0/26211 rd/wr 204.8mb/s 0.028ms/op
+6.010: Shutting down processes
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/makedirs.f
+#
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license at usr/src/OPENSOLARIS.LICENSE
+# or http://www.opensolaris.org/os/licensing.
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at usr/src/OPENSOLARIS.LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+#
+# Copyright 2008 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# Creates a directory with $ndirs potential leaf directories, than mkdir's them
+#
+set $dir=/mnt/fuse
+set $ndirs=10000
+set $meandirwidth=100
+set $nthreads=1
+
+set mode quit firstdone
+
+define fileset name=bigfileset,path=$dir,size=0,leafdirs=$ndirs,dirwidth=$meandirwidth
+
+define process name=dirmake,instances=1
+{
+  thread name=dirmaker,memsize=1m,instances=$nthreads
+  {
+    flowop makedir name=mkdir1,filesetname=bigfileset
+  }
+}
+
+run 1000
+
+echo  "MakeDirs Version 1.0 personality successfully loaded"
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.008: bigfileset populated: 0 files, avg. dir. width = 100, avg. dir. depth = 2.0, 10000 leafdirs, 0.000MB total size
+0.008: Removing bigfileset tree (if exists)
+0.011: Pre-allocating directories in bigfileset tree
+0.016: Pre-allocating files in bigfileset tree
+0.019: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.019: Population and pre-allocation of filesets completed
+0.019: Starting 1 dirmake instances
+1.020: Running...
+2.021: Run took 1 seconds...
+2.021: Per-Operation Breakdown
+mkdir1               10000ops     9997ops/s   0.0mb/s    0.029ms/op [0.020ms - 0.875ms]
+2.021: IO Summary: 10000 ops 9997.241 ops/s 0/0 rd/wr   0.0mb/s 0.029ms/op
+2.021: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	30668
+Metadata write Count: 	20223
+data     Read  Count: 	0
+data     write Count: 	0
+STAT #1 ----- IO COUNT END -----
+

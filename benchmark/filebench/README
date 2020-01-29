@@ -1,0 +1,10 @@
+# install filebench
+1. git clone https://github.com/filebench/filebench.git
+2. sudo apt install bison flex
+3. libtoolize
+4. aclocal
+5. autoheader
+6. automake --add-missing
+7. autoconf
+8. make
+9. sudo make install 

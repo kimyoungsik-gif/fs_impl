@@ -1,0 +1,537 @@
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_create_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.006: Populating and pre-allocating filesets
+0.006: Removing largefile tree (if exists)
+0.009: Pre-allocating directories in largefile tree
+0.009: Pre-allocating files in largefile tree
+0.009: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.009: Population and pre-allocation of filesets completed
+0.009: Starting 1 filecreater instances
+1.010: Running...
+6.011: Run took 5 seconds...
+6.011: Per-Operation Breakdown
+finish               1024ops      205ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+append-file          1025ops      205ops/s 204.8mb/s    3.765ms/op [0.760ms - 9.258ms]
+6.011: IO Summary:  1025 ops 204.970 ops/s 0/205 rd/wr 204.8mb/s 3.765ms/op
+6.011: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	3024
+Metadata write Count: 	9129
+data     Read  Count: 	97216
+data     write Count: 	270225
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_create.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.006: Removing largefile tree (if exists)
+0.007: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filecreater instances
+1.009: Running...
+4.009: Run took 3 seconds...
+4.009: Per-Operation Breakdown
+finish               1024ops      341ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+append-file          1025ops      342ops/s 341.3mb/s    1.055ms/op [0.298ms - 47.744ms]
+4.015: IO Summary:  1025 ops 341.592 ops/s 0/342 rd/wr 341.3mb/s 1.055ms/op
+4.015: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	9239
+Metadata write Count: 	8199
+data     Read  Count: 	8191
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_createfiles_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.012: bigfileset populated: 20000 files, avg. dir. width = 100000, avg. dir. depth = 0.9, 0 leafdirs, 19.531MB total size
+0.012: Removing bigfileset tree (if exists)
+0.014: Pre-allocating directories in bigfileset tree
+0.014: Pre-allocating files in bigfileset tree
+0.452: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.452: Population and pre-allocation of filesets completed
+0.452: Starting 1 filecreate instances
+1.453: Running...
+3.453: Run took 2 seconds...
+3.454: Per-Operation Breakdown
+finish               5001ops     2500ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+closefile1           5001ops     2500ops/s   0.0mb/s    0.013ms/op [0.007ms - 0.462ms]
+writefile1           5001ops     2500ops/s   2.4mb/s    0.016ms/op [0.010ms - 0.081ms]
+createfile1          5001ops     2500ops/s   0.0mb/s    0.052ms/op [0.030ms - 0.393ms]
+3.454: IO Summary: 15003 ops 7499.678 ops/s 0/2500 rd/wr   2.4mb/s 0.027ms/op
+3.454: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	109209
+Metadata write Count: 	44660
+data     Read  Count: 	0
+data     write Count: 	0
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_createfiles.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.012: bigfileset populated: 20000 files, avg. dir. width = 100000, avg. dir. depth = 0.9, 0 leafdirs, 19.531MB total size
+0.012: Removing bigfileset tree (if exists)
+0.014: Pre-allocating directories in bigfileset tree
+0.014: Pre-allocating files in bigfileset tree
+0.474: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.474: Population and pre-allocation of filesets completed
+0.474: Starting 1 filecreate instances
+1.475: Running...
+4.476: Run took 3 seconds...
+4.476: Per-Operation Breakdown
+finish               5001ops     1667ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+closefile1           5001ops     1667ops/s   0.0mb/s    0.033ms/op [0.008ms - 4.681ms]
+writefile1           5001ops     1667ops/s   1.6mb/s    0.042ms/op [0.010ms - 0.945ms]
+createfile1          5001ops     1667ops/s   0.0mb/s    0.122ms/op [0.033ms - 4.632ms]
+4.482: IO Summary: 15003 ops 5000.278 ops/s 0/1667 rd/wr   1.6mb/s 0.066ms/op
+4.482: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	109209
+Metadata write Count: 	44660
+data     Read  Count: 	0
+data     write Count: 	0
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_createrand_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.006: Removing largefile tree (if exists)
+0.008: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filecreater instances
+1.009: Running...
+7.010: Run took 6 seconds...
+7.010: Per-Operation Breakdown
+finish               208ops       35ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+sync                 208ops       35ops/s   0.0mb/s    0.005ms/op [0.002ms - 0.066ms]
+append-file          2081ops      347ops/s 170.8mb/s    2.234ms/op [0.062ms - 4.923ms]
+7.010: IO Summary:  2289 ops 381.445 ops/s 0/347 rd/wr 170.8mb/s 2.031ms/op
+7.010: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	7233
+Metadata write Count: 	9255
+data     Read  Count: 	100414
+data     write Count: 	271643
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_createrand.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing largefile tree (if exists)
+0.007: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filecreater instances
+1.009: Running...
+4.009: Run took 3 seconds...
+4.010: Per-Operation Breakdown
+finish               208ops       69ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+sync                 208ops       69ops/s   0.0mb/s    0.002ms/op [0.001ms - 0.038ms]
+append-file          2081ops      694ops/s 341.6mb/s    0.531ms/op [0.020ms - 12.558ms]
+4.015: IO Summary:  2289 ops 762.858 ops/s 0/694 rd/wr 341.6mb/s 0.483ms/op
+4.015: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	11352
+Metadata write Count: 	9256
+data     Read  Count: 	9248
+data     write Count: 	271646
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rread_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile1 tree (if exists)
+0.008: Pre-allocating directories in bigfile1 tree
+0.008: Pre-allocating files in bigfile1 tree
+1.036: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+1.036: Population and pre-allocation of filesets completed
+1.036: Starting 1 filereader instances
+2.040: Running...
+5.040: Run took 3 seconds...
+5.040: Per-Operation Breakdown
+finish               65537ops    21841ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.005ms]
+write-file           65538ops    21841ops/s  42.7mb/s    0.020ms/op [0.016ms - 49.214ms]
+5.041: IO Summary: 65538 ops 21841.486 ops/s 21841/0 rd/wr  42.7mb/s 0.020ms/op
+5.041: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	139289
+Metadata write Count: 	73736
+data     Read  Count: 	73728
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rread.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.006: Removing bigfile1 tree (if exists)
+0.008: Pre-allocating directories in bigfile1 tree
+0.008: Pre-allocating files in bigfile1 tree
+1.014: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+1.014: Population and pre-allocation of filesets completed
+1.014: Starting 1 filereader instances
+2.015: Running...
+5.016: Run took 3 seconds...
+5.016: Per-Operation Breakdown
+finish               65537ops    21841ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+write-file           65538ops    21841ops/s  42.7mb/s    0.021ms/op [0.001ms - 76.103ms]
+5.016: IO Summary: 65538 ops 21841.435 ops/s 21841/0 rd/wr  42.7mb/s 0.021ms/op
+5.016: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	123988
+Metadata write Count: 	66280
+data     Read  Count: 	126136
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwrite_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile1 tree (if exists)
+0.007: Pre-allocating directories in bigfile1 tree
+0.008: Pre-allocating files in bigfile1 tree
+0.950: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.950: Population and pre-allocation of filesets completed
+0.950: Starting 1 filewriter instances
+1.959: Running...
+4.959: Run took 3 seconds...
+4.959: Per-Operation Breakdown
+finish               65537ops    21842ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.004ms]
+write-file           65538ops    21842ops/s  42.7mb/s    0.015ms/op [0.011ms - 78.453ms]
+4.959: IO Summary: 65538 ops 21842.214 ops/s 0/21842 rd/wr  42.7mb/s 0.015ms/op
+4.959: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	73753
+Metadata write Count: 	73736
+data     Read  Count: 	73728
+data     write Count: 	335872
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwritedsync_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.008: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.973: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.973: Population and pre-allocation of filesets completed
+0.973: Starting 1 filewriter instances
+1.974: Running...
+3.975: Run took 2 seconds...
+3.975: Per-Operation Breakdown
+finish               65536ops    32760ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+write-file           65537ops    32761ops/s  64.0mb/s    0.014ms/op [0.011ms - 49.258ms]
+3.975: IO Summary: 65537 ops 32760.981 ops/s 0/32761 rd/wr  64.0mb/s 0.014ms/op
+3.975: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	73752
+Metadata write Count: 	73735
+data     Read  Count: 	73727
+data     write Count: 	335871
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwritedsync.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.008: Pre-allocating directories in bigfile tree
+0.009: Pre-allocating files in bigfile tree
+0.922: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.922: Population and pre-allocation of filesets completed
+0.922: Starting 1 filewriter instances
+1.923: Running...
+4.923: Run took 3 seconds...
+4.923: Per-Operation Breakdown
+finish               65536ops    21842ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+write-file           65537ops    21843ops/s  42.7mb/s    0.015ms/op [0.011ms - 48.522ms]
+4.923: IO Summary: 65537 ops 21842.631 ops/s 0/21843 rd/wr  42.7mb/s 0.015ms/op
+4.924: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	73752
+Metadata write Count: 	73735
+data     Read  Count: 	73727
+data     write Count: 	335871
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwrite.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile1 tree (if exists)
+0.007: Pre-allocating directories in bigfile1 tree
+0.008: Pre-allocating files in bigfile1 tree
+0.914: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.914: Population and pre-allocation of filesets completed
+0.914: Starting 1 filewriter instances
+1.915: Running...
+3.915: Run took 2 seconds...
+3.915: Per-Operation Breakdown
+finish               65537ops    32763ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.004ms]
+write-file           65538ops    32764ops/s  64.0mb/s    0.014ms/op [0.011ms - 49.213ms]
+3.915: IO Summary: 65538 ops 32763.561 ops/s 0/32764 rd/wr  64.0mb/s 0.014ms/op
+3.915: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	73753
+Metadata write Count: 	73736
+data     Read  Count: 	73728
+data     write Count: 	335872
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwritefsync_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.007: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.957: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.957: Population and pre-allocation of filesets completed
+0.957: Starting 1 filewriter instances
+1.958: Running...
+3.958: Run took 2 seconds...
+3.959: Per-Operation Breakdown
+finish               1ops        0ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.000ms]
+sync-file            1ops        0ops/s   0.0mb/s    0.012ms/op [0.012ms - 0.012ms]
+write-file           16385ops     8190ops/s  64.0mb/s    0.022ms/op [0.016ms - 49.598ms]
+3.964: IO Summary: 16386 ops 8190.461 ops/s 0/8190 rd/wr  64.0mb/s 0.022ms/op
+3.964: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	24600
+Metadata write Count: 	24583
+data     Read  Count: 	57343
+data     write Count: 	319487
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_rwritefsync.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.006: Populating and pre-allocating filesets
+0.007: Removing bigfile tree (if exists)
+0.012: Pre-allocating directories in bigfile tree
+0.013: Pre-allocating files in bigfile tree
+1.134: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+1.134: Population and pre-allocation of filesets completed
+1.134: Starting 1 filewriter instances
+2.135: Running...
+4.135: Run took 2 seconds...
+4.135: Per-Operation Breakdown
+finish               1ops        0ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.000ms]
+sync-file            1ops        0ops/s   0.0mb/s    0.014ms/op [0.014ms - 0.014ms]
+write-file           16385ops     8190ops/s  64.0mb/s    0.024ms/op [0.018ms - 49.174ms]
+4.141: IO Summary: 16386 ops 8190.989 ops/s 0/8190 rd/wr  64.0mb/s 0.024ms/op
+4.141: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	24600
+Metadata write Count: 	24583
+data     Read  Count: 	57343
+data     write Count: 	319487
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_seqread_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing largefile tree (if exists)
+0.007: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.908: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.908: Population and pre-allocation of filesets completed
+0.908: Starting 1 filereader instances
+1.909: Running...
+3.910: Run took 2 seconds...
+3.910: Per-Operation Breakdown
+finish               1026ops      513ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+seqread-file         1027ops      513ops/s 512.3mb/s    0.555ms/op [0.008ms - 49.571ms]
+3.910: IO Summary:  1027 ops 513.344 ops/s 513/0 rd/wr 512.3mb/s 0.555ms/op
+3.910: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	10821
+Metadata write Count: 	17330
+data     Read  Count: 	278680
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_seqread.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing largefile tree (if exists)
+0.007: Pre-allocating directories in largefile tree
+0.008: Pre-allocating files in largefile tree
+0.930: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.930: Population and pre-allocation of filesets completed
+0.930: Starting 1 filereader instances
+1.931: Running...
+3.932: Run took 2 seconds...
+3.932: Per-Operation Breakdown
+finish               1026ops      513ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+seqread-file         1027ops      513ops/s 512.4mb/s    0.481ms/op [0.021ms - 49.791ms]
+3.932: IO Summary:  1027 ops 513.412 ops/s 513/0 rd/wr 512.4mb/s 0.481ms/op
+3.932: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	9986
+Metadata write Count: 	16391
+data     Read  Count: 	278526
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_seqwrite_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.006: Removing bigfile tree (if exists)
+0.008: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filewriter instances
+1.009: Running...
+7.010: Run took 6 seconds...
+7.010: Per-Operation Breakdown
+finish               1ops        0ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.000ms]
+write-file           1025ops      171ops/s 170.6mb/s    4.308ms/op [0.328ms - 4.943ms]
+7.010: IO Summary:  1025 ops 170.808 ops/s 0/171 rd/wr 170.6mb/s 4.308ms/op
+7.010: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	2841
+Metadata write Count: 	9129
+data     Read  Count: 	76829
+data     write Count: 	270225
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_seqwrite.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.005: Removing bigfile tree (if exists)
+0.008: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filewriter instances
+1.009: Running...
+4.010: Run took 3 seconds...
+4.010: Per-Operation Breakdown
+finish               1ops        0ops/s   0.0mb/s    0.001ms/op [0.001ms - 0.001ms]
+write-file           1025ops      342ops/s 341.3mb/s    1.063ms/op [0.328ms - 46.882ms]
+4.010: IO Summary:  1025 ops 341.593 ops/s 0/342 rd/wr 341.3mb/s 1.063ms/op
+4.010: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	9239
+Metadata write Count: 	8199
+data     Read  Count: 	8191
+data     write Count: 	270335
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_writefsync_dir.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.006: Removing bigfile tree (if exists)
+0.008: Pre-allocating directories in bigfile tree
+0.008: Pre-allocating files in bigfile tree
+0.008: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.008: Population and pre-allocation of filesets completed
+0.008: Starting 1 filewriter instances
+1.009: Running...
+6.010: Run took 5 seconds...
+6.010: Per-Operation Breakdown
+finish               128ops       26ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+sync-file            128ops       26ops/s   0.0mb/s    0.001ms/op [0.001ms - 0.014ms]
+append-file          131073ops    26211ops/s 204.8mb/s    0.026ms/op [0.022ms - 5.605ms]
+6.010: IO Summary: 131201 ops 26236.543 ops/s 0/26211 rd/wr 204.8mb/s 0.026ms/op
+6.010: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	262167
+Metadata write Count: 	131079
+data     Read  Count: 	131071
+data     write Count: 	393215
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/filemicro_writefsync.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.004: Populating and pre-allocating filesets
+0.004: Removing bigfile tree (if exists)
+0.006: Pre-allocating directories in bigfile tree
+0.007: Pre-allocating files in bigfile tree
+0.007: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.007: Population and pre-allocation of filesets completed
+0.007: Starting 1 filewriter instances
+1.008: Running...
+6.008: Run took 5 seconds...
+6.008: Per-Operation Breakdown
+finish               128ops       26ops/s   0.0mb/s    0.000ms/op [0.000ms - 0.001ms]
+sync-file            128ops       26ops/s   0.0mb/s    0.003ms/op [0.001ms - 0.017ms]
+append-file          131073ops    26212ops/s 204.8mb/s    0.028ms/op [0.023ms - 13.733ms]
+6.009: IO Summary: 131201 ops 26237.503 ops/s 0/26212 rd/wr 204.8mb/s 0.028ms/op
+6.009: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	262167
+Metadata write Count: 	131079
+data     Read  Count: 	131071
+data     write Count: 	393215
+STAT #1 ----- IO COUNT END -----
+
+=============================================================================================
+/home/koo/src/koofs/benchmark/filebench/workloads/used/makedirs.f
+Filebench Version 1.5-alpha3
+0.000: Allocated 173MB of shared memory
+0.005: Populating and pre-allocating filesets
+0.008: bigfileset populated: 0 files, avg. dir. width = 100, avg. dir. depth = 2.0, 10000 leafdirs, 0.000MB total size
+0.008: Removing bigfileset tree (if exists)
+0.010: Pre-allocating directories in bigfileset tree
+0.015: Pre-allocating files in bigfileset tree
+0.019: Waiting for pre-allocation to finish (in case of a parallel pre-allocation)
+0.019: Population and pre-allocation of filesets completed
+0.019: Starting 1 dirmake instances
+1.020: Running...
+2.020: Run took 1 seconds...
+2.020: Per-Operation Breakdown
+mkdir1               10000ops     9997ops/s   0.0mb/s    0.029ms/op [0.020ms - 0.867ms]
+2.020: IO Summary: 10000 ops 9996.751 ops/s 0/0 rd/wr   0.0mb/s 0.029ms/op
+2.020: Shutting down processes
+STAT #1 ----- IO COUNT START -----
+Metadata Read  Count: 	30668
+Metadata write Count: 	20223
+data     Read  Count: 	0
+data     write Count: 	0
+STAT #1 ----- IO COUNT END -----
+

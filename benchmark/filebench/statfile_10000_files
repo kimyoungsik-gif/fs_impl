@@ -1,0 +1,9 @@
+define fileset name="testF",entries=10000,filesize=4k,prealloc,path="/mnt/fuse" 
+
+define process name="readerP",instances=1 {
+	thread name="readerT",instances=1 {
+		flowop statfile name="statOP",filesetname="testF"
+	}
+}
+
+run 10
