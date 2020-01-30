@@ -23,6 +23,7 @@
 
 #include <fuse3/fuse.h>
 #include <stdio.h>
+#include <vector>
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -105,11 +106,32 @@ int main(int argc, char *argv[])
 	int ret;
 	struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
 
+	// file system stotrage space
+	FILE * file;
+	if((file = fopen("fs.txt", "w+")) == NULL) {
+		printf("File open error.\n");
+		return -1;
+	}
+
 	/* Set defaults -- we have to use strdup so that
 	   fuse_opt_parse can free the defaults if other
 	   values are specified */
-	options.filename = strdup("koofs");
-	options.contents = strdup("koofs World!\n");
+	options.filename = strdup("KJK");
+	options.contents = strdup("KJK's file system\n");
+
+	//start address
+	super_node_base_idx = 0;
+	inode_bitmap_base_idx = 104857600; 
+	block_bitmap_base_idx = 209715200;
+	inode_base_idx = 314572800;
+	data_block_base_idx = 1.0486e9;
+
+	//end address
+	super_node_end_idx = 104857600;
+	inode_bitmap_end_idx = 209715200;
+	block_bitmap_end_idx =  314572800;
+	inode_end_idx = 1.0486e9;
+	data_block_end_idx = 1.0486e10;
 
 	/* Parse options */
 	if (fuse_opt_parse(&args, &options, option_spec, NULL) == -1)
