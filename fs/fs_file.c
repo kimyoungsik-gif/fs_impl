@@ -20,7 +20,7 @@ int fs_open (const char *path, struct fuse_file_info *fi) {
 
 int fs_create (const char *path, mode_t mode, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
-
+//sdfddfsdf
 	return 0;
 }
 
