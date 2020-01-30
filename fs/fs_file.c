@@ -14,7 +14,7 @@ extern struct monitor *global_monitor;
 
 int fs_open (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
-
+//dfsdf-서영ㅋ지ㅏ렁
 	return 0;
 }
 
