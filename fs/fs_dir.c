@@ -1,4 +1,4 @@
-#include <stdio.h>
+dfksdfsd#include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -21,9 +21,12 @@ int fs_mkdir (const char *path, mode_t mode) {
 	int data_block_size = 102400000;
 	char* bitmap = "1";
 	char* dir_name = "mkdir_name";
-	
 
-	metadata m;
+	
+	//A= fs_opendir(a,b)
+
+
+	struct metadata m;
 	m.mode = mode;
 	m.nlink = 1;
 	m.uid = 123;
@@ -34,6 +37,7 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.mtime = 33;
 	m.ino = inode_offset;
 	m.data_ptr = data_block_offset;
+	m.count=0;
 
 	nw1 = pwrite(fd, bitmap, inode_bitmap_size,(off_t) inode_bitmap_offset);
 	nw2 = pwrite(fd, m, inode_size, (off_t) inode_offset);
@@ -55,7 +59,35 @@ int fs_readdir (const char *path, void *buf, fuse_fill_dir_t filler, off_t off, 
 }
 
 int fs_rmdir (const char *path) {
+	struct metadata *m;
+	int offset=	fs_opendir(path,fi);
+	pread(fd,m,sizeof(m),offset);
 	
+	if(m.count!=0)
+	{printf("directory is not empty!!!!!!!!!");}
+
+	else
+	{
+		//inode
+		
+	m.mode = mode;
+	m.nlink = 0;
+	m.uid =0;
+	m.gid = 0;
+	m.size = 0;
+	m.atime = 0;
+	m.ctime = 0;
+	m.mtime = 0;
+	m.ino = 0;
+	m.data_ptr = 0;
+	//bitmap free allocation please.
+
+	
+
+	
+
+
+
 	return 0;
 }
 
