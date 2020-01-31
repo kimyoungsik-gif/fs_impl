@@ -17,8 +17,12 @@ int fs_opendir (const char *path, struct fuse_file_info *fi) {
 int fs_mkdir (const char *path, mode_t mode) {
 	int inode_bitmap_size = 1;
 	int inode_size = 256;
+	int data_bitmap_size = 1;
+	int data_block_size = 102400000;
 	char* bitmap = "1";
+	char* dir_name = "mkdir_name";
 	
+
 	metadata m;
 	m.mode = mode;
 	m.nlink = 0;
@@ -35,6 +39,8 @@ int fs_mkdir (const char *path, mode_t mode) {
 
 	inode_bitmap_offset	+= inode_bitmap_size;
 	inode_offset += inode_size;
+	data_bitmap_offset += data_bitmap_size;
+	data_block_offset += data_block_size;
 
 	return 0;
 }
