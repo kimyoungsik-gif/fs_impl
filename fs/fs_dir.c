@@ -25,7 +25,7 @@ int fs_mkdir (const char *path, mode_t mode) {
 
 	metadata m;
 	m.mode = mode;
-	m.nlink = 0;
+	m.nlink = 1;
 	m.uid = 123;
 	m.gid = 456;
 	m.size = 12345;
@@ -33,6 +33,7 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.ctime = 22;
 	m.mtime = 33;
 	m.ino = inode_offset;
+	m.data_ptr = data_block_offset;
 
 	nw1 = pwrite(fd, bitmap, inode_bitmap_size,(off_t) inode_bitmap_offset);
 	nw2 = pwrite(fd, m, inode_size, (off_t) inode_offset);
