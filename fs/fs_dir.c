@@ -11,6 +11,35 @@ dfksdfsd#include <stdio.h>
 int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
 
+	struct metadata* cur_m;
+	int cur_data_block_idx;
+	struct dir_data cur_dir_data;
+	int cur_dir_inumber = root_inumber;
+	char* result;
+	result = strtok(path,"/");
+
+	while(result != NULL) {
+		pread(fd, cur_m, sizeof(struct metadata), inode_base_idx + cur_dir_inumber * INODE_SIZE );
+		cur_data_block_idx = cur_m.datablock;
+		pread(fd, cur_dir_data, sizeof(struct dir_data), data_block_base_idx + cur_data_block_idx * BLOCK_SIZE );
+		
+		int flag = 0;
+		for(int i = 0; i < cur_data.child.size();i++){
+			if(cur_dir_data.child[i] == result){
+				cur_dir_inumber = cur_dir_data.child[i];	
+				flag++;	
+			}
+		}
+
+		if(flag!) {
+			printf("error : no such directory\n");
+			return -1;
+		}
+
+		result = strtok(NULL, "/");	
+	}		
+	
+	return cur_dir_inumber;
 	return 0;
 }
 
