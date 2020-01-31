@@ -105,10 +105,9 @@ int main(int argc, char *argv[])
 {
 	int ret;
 	struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
-
+	struct disk_offset = { 0, 0, 0 ,0};
 	// file system stotrage space
-	FILE * file;
-	if((file = fopen("fs.txt", "w+")) == NULL) {
+	if((fd = fopen("fs.txt", "w+")) == NULL) {
 		printf("File open error.\n");
 		return -1;
 	}
@@ -119,19 +118,7 @@ int main(int argc, char *argv[])
 	options.filename = strdup("KJK");
 	options.contents = strdup("KJK's file system\n");
 
-	//start address
-	super_node_base_idx = 0;
-	inode_bitmap_base_idx = 104857600; 
-	block_bitmap_base_idx = 209715200;
-	inode_base_idx = 314572800;
-	data_block_base_idx = 1.0486e9;
-
-	//end address
-	super_node_end_idx = 104857600;
-	inode_bitmap_end_idx = 209715200;
-	block_bitmap_end_idx =  314572800;
-	inode_end_idx = 1.0486e9;
-	data_block_end_idx = 1.0486e10;
+	struct fuse_file_info *fi;
 
 	/* Parse options */
 	if (fuse_opt_parse(&args, &options, option_spec, NULL) == -1)
