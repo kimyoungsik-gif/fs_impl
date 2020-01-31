@@ -15,7 +15,27 @@ int fs_opendir (const char *path, struct fuse_file_info *fi) {
 }
 
 int fs_mkdir (const char *path, mode_t mode) {
+	int inode_bitmap_size = 1;
+	int inode_size = 256;
+	char* bitmap = "1";
 	
+	metadata m;
+	m.mode = mode;
+	m.nlink = 0;
+	m.uid = 123;
+	m.gid = 456;
+	m.size = 12345;
+	m.atime = 11;
+	m.ctime = 22;
+	m.mtime = 33;
+	m.ino = inode_offset;
+
+	nw1 = pwrite(fd, bitmap, inode_bitmap_size,(off_t) inode_bitmap_offset);
+	nw2 = pwrite(fd, m, inode_size, (off_t) inode_offset);
+
+	inode_bitmap_offset	+= inode_bitmap_size;
+	inode_offset += inode_size;
+
 	return 0;
 }
 
