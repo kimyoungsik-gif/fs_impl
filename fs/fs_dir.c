@@ -28,7 +28,7 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.nlink = 1;
 	m.uid = 123;
 	m.gid = 456;
-	m.size = 12345;
+	m.size = 2;
 	m.atime = 11;
 	m.ctime = 22;
 	m.mtime = 33;
@@ -54,7 +54,8 @@ int fs_readdir (const char *path, void *buf, fuse_fill_dir_t filler, off_t off, 
 	return 0;
 }
 
-int fs_rmdir (const char *path) {
+int fs_rmdir (const char *path) {	
+	
 	
 	return 0;
 }
