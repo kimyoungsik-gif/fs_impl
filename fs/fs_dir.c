@@ -40,14 +40,12 @@ int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	}		
 	
 	return cur_dir_inumber;
-	return 0;
 }
 
 int fs_mkdir (const char *path, mode_t mode) {
 	int inode_bitmap_size = 1;
-	int inode_size = 256;
 	int data_bitmap_size = 1;
-	int data_block_size = 102400000;
+
 	char* bitmap = "1";
 	char* dir_name = "mkdir_name";
 
@@ -69,12 +67,12 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.count=0;
 
 	nw1 = pwrite(fd, bitmap, inode_bitmap_size,(off_t) inode_bitmap_offset);
-	nw2 = pwrite(fd, m, inode_size, (off_t) inode_offset);
+	nw2 = pwrite(fd, m, INODE_SIZE, (off_t) inode_offset);
 
 	inode_bitmap_offset	+= inode_bitmap_size;
-	inode_offset += inode_size;
+	inode_offset += INODE_SIZE;
 	data_bitmap_offset += data_bitmap_size;
-	data_block_offset += data_block_size;
+	data_block_offset += BLOCK_SIZE;
 
 	return 0;
 }
