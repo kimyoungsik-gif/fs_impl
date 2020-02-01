@@ -43,15 +43,11 @@ int fs_opendir (const char *path, struct fuse_file_info *fi) {
 }
 
 int fs_mkdir (const char *path, mode_t mode) {
-	int inode_bitmap_size = 1;
-	int data_bitmap_size = 1;
-
 	char* bitmap = "1";
 	char* dir_name = "mkdir_name";
 
 	
 	//A= fs_opendir(a,b)
-
 
 	struct metadata m;
 	m.mode = mode;
@@ -64,14 +60,14 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.mtime = 33;
 	m.ino = inode_offset;
 	m.data_ptr = data_block_offset;
-	m.count=0;
+	m.count = 0;
 
-	nw1 = pwrite(fd, bitmap, inode_bitmap_size,(off_t) inode_bitmap_offset);
+	nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) inode_bitmap_offset);
 	nw2 = pwrite(fd, m, INODE_SIZE, (off_t) inode_offset);
 
-	inode_bitmap_offset	+= inode_bitmap_size;
+	inode_bitmap_offset	+= BITMAP_SIZE;
 	inode_offset += INODE_SIZE;
-	data_bitmap_offset += data_bitmap_size;
+	data_bitmap_offset += BITMAP_SIZE;
 	data_block_offset += BLOCK_SIZE;
 
 	return 0;
@@ -90,26 +86,24 @@ int fs_rmdir (const char *path) {
 	int offset=	fs_opendir(path,fi);
 	pread(fd,m,sizeof(m),offset);
 	
-	if(m.count!=0)
-	{printf("directory is not empty!!!!!!!!!");}
+	if(m.count!=0){
+		printf("directory is not empty!!!!!!!!!"); }
 
-	else
-	{
+	else{
 		//inode
 		
-	m.mode = mode;
-	m.nlink = 0;
-	m.uid =0;
-	m.gid = 0;
-	m.size = 0;
-	m.atime = 0;
-	m.ctime = 0;
-	m.mtime = 0;
-	m.ino = 0;
-	m.data_ptr = 0;
-	//bitmap free allocation please.
-
+		m.mode = mode;
+		m.nlink = 0;
+		m.uid =0;
+		m.gid = 0;
+		m.size = 0;
+		m.atime = 0;
+		m.ctime = 0;
+		m.mtime = 0;
+		m.ino = 0;
+		m.data_ptr = 0;
 	
+		//bitmap free allocation please.
 
 	
 
