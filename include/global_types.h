@@ -23,6 +23,10 @@
 #define inode_end_idx 1.0486e9
 #define data_block_end_idx 1.0486e10
 
+//ID
+#define USER_ID		123456789
+#define GROUP_ID	123456789
+
 //current offset
 struct disk_offset{
 	long long inode_bitmap_offset;
