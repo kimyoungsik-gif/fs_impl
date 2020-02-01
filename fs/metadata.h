@@ -17,6 +17,7 @@ struct metadata {
     time_t			mtime;
     uint64_t		ino;
 	int				data_ptr;
+	int				count;
 };
 
 #endif
