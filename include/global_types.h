@@ -4,7 +4,9 @@
 #include <stdint.h> 
 #include <vector>
 #define BLOCK_SIZE	4096
+#define INODE_SIZE  256
 #define PAGESIZE	4096
+#define BITMAP_SIZE 1
 #define DEVSIZE 1024L * 1024L * 1024L * 10L
 
 //start address
