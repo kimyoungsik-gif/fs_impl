@@ -1,10 +1,10 @@
 #ifndef __GLOBAL_TYPES__
 #define __GLOBAL_TYPES__
 
-#include <stdint.h> 
-#include <vector>
+#include <stdint.h>
+#include <list>
 #define BLOCK_SIZE	4096
-#define INODE_SIZE  256
+#define INODE_SIZE	256
 #define PAGESIZE	4096
 #define BITMAP_SIZE 1
 #define DEVSIZE 1024L * 1024L * 1024L * 10L
@@ -27,6 +27,8 @@
 #define USER_ID		123456789
 #define GROUP_ID	123456789
 
+using namespace std;
+
 //current offset
 struct disk_offset{
 	long long inode_bitmap_offset;
@@ -35,7 +37,11 @@ struct disk_offset{
 	long long data_block_offset;
 }
 
+//directory entry
+struct dir_entry {
+	list<pair<string, int>> entry; // you should push parent directory and myself if you run mkdir  		
+}
 
+//data storage file
 File *fd;
-vector<fuse_file_info> fi;_
 #endif
