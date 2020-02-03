@@ -21,6 +21,8 @@ struct metadata {
     list<int>			indir_ptr; //indirect block pointer
     int				count;
     int 			cur_data_offset; //current file offset position
+	int				data_bitmap_ptr;
+	int				inode_bitmap_ptr;
 };
 
 #endif
