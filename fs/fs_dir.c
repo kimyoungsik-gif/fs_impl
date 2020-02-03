@@ -52,7 +52,7 @@ int fs_mkdir (const char *path, mode_t mode) {
 	e.entry.push_back(make_pair(my_name, inode_offset));
 	p_meta.count++;
 	P_meta.size++;
-	int P_D = pwrite(fd, e, sizeof(struct dir_entry), (off_t) p.meta.data_ptr);
+	int P_D = pwrite(fd, e, sizeof(struct dir_entry), (off_t) p_meta.data_ptr);
 	int P_I = pwrite(fd, p_meta, sizeof(struct metadata), (off_t) p_id);
 
 	//child_Information
@@ -67,6 +67,8 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.mtime = 33;
 	m.ino = inode_offset;
 	m.data_ptr = data_block_offset;
+	m.inode_bitmap_ptr = inode_bitmap_offset;
+	m.data_bitmap_ptr = data_bitmap_offset;
 	m.count = 0;
 
 	int nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) inode_bitmap_offset);
@@ -89,7 +91,8 @@ int fs_readdir (const char *path, void *buf, fuse_fill_dir_t filler, off_t off, 
 }
 
 int fs_rmdir (const char *path) {
-	struct metadata *m;
+	struct metadata m;
+	char* nobitmap = "0";
 	int offset=	fs_opendir(path,fi);
 	pread(fd,m,sizeof(m),offset);
 
@@ -97,22 +100,55 @@ int fs_rmdir (const char *path) {
 		printf("directory is not empty!!!!!!!!!"); }
 
 	else{
-		//inode
-/*
-		m.mode = mode;
-		m.nlink = 0;
-		m.uid =0;
-		m.gid = 0;
-		m.size = 0;
-		m.atime = 0;
-		m.ctime = 0;
-		m.mtime = 0;
-		m.ino = 0;
-		m.data_ptr = 0;
+		//parent counter,size down
+		string P_path = path;
+		string my_name = path; 
+		if(path == "/") {
+			P_path = path;
+			my_name = path;
+			root_inumber = inode_base_idx;
+		}
+		else {	
+			int size = P_path.size();
+			int index;
+			for (int i = size; i >= 0; i--){
+				if(P_path[i] == "/"){
+					index = i;
+					break;
+				}
+			}
+
+			P_path.replace(index,size,"");
+			my_name.replace(0,index+1,"");
+		}
+
+		struct metadata p_meta;
+		struct dir_entry e;
+		int p_id = inode_finder(P_path);
+
+		pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
+		pread(fd,(char*)&e,sizeof(e),p_meta.data_ptr);
+
+		p_meta.count--;
+		P_meta.size--;
 
 		//bitmap free allocation please.
+		inode_bitmap_ofs = inode_bitmap_base_idx + ((p_id - inode_base_idx)/INODE_SIZE);
+		int nw1 = pwrite(fd, nobitmap, BITMAP_SIZE, (off_t) inode_bitmap_ofs);
+		
+		for(int i = 0; i < p_meta.data_ptr.size();i++){
+			int cur_ptr = p_meta.data_ptr.begin() + i;
+			data_bitmap_ofs = data_bitmap_base_idx + ((cur_ptr - inode_base_idx)/BLOCK_SIZE);
+			int nw2 = pwrite(fd, nobitmap, BITMAP_SIZE, (off_t) data_bitmap_ofs);
+		}
 
-*/
+		//parent data change
+		map<string,int>::iterator it;
+		for(it = map.begin();it!=map.end();i++){
+			if(it == e.entry.find(my_name)){
+				e.entry.erase(my_name);
+			}
+		}
 
 	}
 
