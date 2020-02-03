@@ -105,12 +105,7 @@ int main(int argc, char *argv[])
 {
 	int ret;
 	struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
-	struct disk_offset = { 0, 0, 0 ,0};
-	// file system stotrage space
-	if((fd = fopen("fs.txt", "w+")) == NULL) {
-		printf("File open error.\n");
-		return -1;
-	}
+
 
 	/* Set defaults -- we have to use strdup so that
 	   fuse_opt_parse can free the defaults if other
@@ -118,8 +113,7 @@ int main(int argc, char *argv[])
 	options.filename = strdup("KJK");
 	options.contents = strdup("KJK's file system\n");
 
-	struct fuse_file_info *fi;
-
+	struct disk_offset;
 	/* Parse options */
 	if (fuse_opt_parse(&args, &options, option_spec, NULL) == -1)
 		return 1;

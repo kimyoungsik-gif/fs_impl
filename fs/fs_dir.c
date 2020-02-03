@@ -10,65 +10,49 @@
 
 int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
-
-	struct metadata* cur_m;
-	int cur_data_block_idx;
-	struct dir_data cur_dir_data;
-	int cur_dir_inumber = root_inumber;
-	char* result;
-	result = strtok(path,"/");
-
-	while(result != NULL) {
-		pread(fd, cur_m, sizeof(struct metadata), cur_dir_inumber);
-		cur_data_block_idx = cur_m.datablock;
-		pread(fd, cur_dir_data, sizeof(struct dir_data), cur_data_block_idx);
-		
-		int flag = 0;
-		for(int i = 0; i < cur_data.child.size();i++){
-			if(cur_dir_data.child[i] == result){
-				cur_dir_inumber = cur_dir_data.child[i];	
-				flag++;	
-			}
-		}
-
-		if(flag!) {
-			printf("error : no such directory\n");
-			return -1;
-		}
-
-		result = strtok(NULL, "/");	
-	}		
-	
-	return cur_dir_inumber;
+	int open_dir_inumber = inode_finder("path");
+	fi->fh = open_dir_inumber;
+	return 0; 
 }
 
 int fs_mkdir (const char *path, mode_t mode) {
 	char* bitmap = "1";
-	
-	//parent_Information
-	string p_path = path;
-	int size = pathhh.size();
-	int index;
-	for (int i = size; i >= 0; i--){
-		if(pathhh[i] == "/"){
-			index = i;
-			break;
-		}
-	}
-	string my_name = p_path;
-	p_path.replace(index,size,"");
-	my_name.replace(0,index+1,"");
+	string P_path = path;
+	string my_name = path; 
 
-	int p_id = fs_opendir(pathhh,NULL);
+	//parent_Information
+	if(path == "/") {
+		P_path = path;
+		my_name = path;
+		root_inumber = inode_base_idx;
+	}
+	else {	
+		int size = P_path.size();
+		int index;
+		for (int i = size; i >= 0; i--){
+			if(P_path[i] == "/"){
+				index = i;
+				break;
+			}
+		}
+
+		P_path.replace(index,size,"");
+		my_name.replace(0,index+1,"");
+	}
+
+	//traverse implement
+
 	struct metadata p_meta;
-	pread(fd,p_meta,sizeof(struct meatdata),p_id);
-	struct dir_data d;
-	pread(fd,d,sizeof(struct dir_data),p_meta.data_ptr);
-	d.child_name[p_meta.count] = my_name;
-	d.child_inumber[p_meta.count] = inode_offset;
+	struct dir_entry e;
+	int p_id = inode_finder(P_path);
+
+	pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
+	pread(fd,(char*)&e,sizeof(e),p_meta.data_ptr);
+
+	e.entry.push_back(make_pair(my_name, inode_offset));
 	p_meta.count++;
 	P_meta.size++;
-	int P_D = pwrite(fd, d, sizeof(struct dir_data), (off_t) p.meta.data_ptr);
+	int P_D = pwrite(fd, e, sizeof(struct dir_entry), (off_t) p.meta.data_ptr);
 	int P_I = pwrite(fd, p_meta, sizeof(struct metadata), (off_t) p_id);
 
 	//child_Information
@@ -88,7 +72,7 @@ int fs_mkdir (const char *path, mode_t mode) {
 	int nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) inode_bitmap_offset);
 	int nw2 = pwrite(fd, m, INODE_SIZE, (off_t) inode_offset);
 
-	inode_bitmap_offset	+= BITMAP_SIZE;
+	inode_bitmap_offset += BITMAP_SIZE;
 	inode_offset += INODE_SIZE;
 	data_bitmap_offset += BITMAP_SIZE;
 	data_block_offset += BLOCK_SIZE;
@@ -108,13 +92,13 @@ int fs_rmdir (const char *path) {
 	struct metadata *m;
 	int offset=	fs_opendir(path,fi);
 	pread(fd,m,sizeof(m),offset);
-	
+
 	if(m.count!=0){
 		printf("directory is not empty!!!!!!!!!"); }
 
 	else{
 		//inode
-		
+/*
 		m.mode = mode;
 		m.nlink = 0;
 		m.uid =0;
@@ -125,17 +109,21 @@ int fs_rmdir (const char *path) {
 		m.mtime = 0;
 		m.ino = 0;
 		m.data_ptr = 0;
-	
+
 		//bitmap free allocation please.
 
-	
+*/
 
-
+	}
 
 	return 0;
 }
 
 int fs_releasedir (const char *path, struct fuse_file_info *fi) {
+	int close_dir_inumber = inode_finder("path");
+	//close implement
+
+	//
 	return 0;
 }
 

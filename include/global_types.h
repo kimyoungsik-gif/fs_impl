@@ -2,7 +2,11 @@
 #define __GLOBAL_TYPES__
 
 #include <stdint.h>
-#include <list>
+#include <map>
+#include <vector>
+#include <string>
+#include <unistd.h>
+
 #define BLOCK_SIZE	4096
 #define INODE_SIZE	256
 #define PAGESIZE	4096
@@ -35,13 +39,18 @@ struct disk_offset{
 	long long data_bitmap_offset;
 	long long inode_offset;
 	long long data_block_offset;
-}
+};
 
 //directory entry
 struct dir_entry {
-	list<pair<string, int>> entry; // you should push parent directory and myself if you run mkdir  		
-}
+	map<string, int> entry;   		
+};
 
 //data storage file
-File *fd;
+int fd;
+
+//offset_table
+struct disk_offset dioff;
+
+int root_inumber;
 #endif

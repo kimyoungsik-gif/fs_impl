@@ -67,13 +67,27 @@ void *fs_init (struct fuse_conn_info *conn, struct fuse_config *cfg) {
 #ifdef MONITOR
 	monitor_init(&global_monitor);
 #endif
+        // file system stotrage space
+        if((fd = open("disk", O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1 ) {
+                printf("File open error.\n");
+                return NULL;
+        }
+	
+	//disk offset init
+        dioff.inode_bitmap_offset = 0;
+        dioff.data_bitmap_offset = 0;
+        dioff.inode_offset = 0;
+        dioff.data_block_offset = 0;
+
 
 	fs_mkdir("/", 0755);
 
 	return NULL;
+
 }
 
 void fs_destroy (void *private_data) {
+
 #ifdef MONITOR
 	monitor_print(global_monitor);
 	monitor_destroy(global_monitor);
