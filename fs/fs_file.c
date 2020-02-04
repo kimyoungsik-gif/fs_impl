@@ -93,6 +93,7 @@ int fs_read (const char *path, char *buf, size_t size, off_t off, struct fuse_fi
 
 int fs_write (const char *path, const char *buf, size_t size, off_t off, struct fuse_file_info *fi) {
 	
+	
 	return 0;
 }
 

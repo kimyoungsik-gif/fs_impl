@@ -16,7 +16,21 @@ struct monitor *global_monitor;
 
 int fs_getattr (const char *path, struct stat *stbuf, struct fuse_file_info *fi) {
 
-    return 0;
+	struct metadata meta;
+    int ind = inode_finder(path);	
+
+	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
+	stbuf->mode = meta.mode;
+	stbuf->nlink = meta.nlink;
+	stbuf->uid = meta.uid;
+	stbuf->gid = meta.gid;
+	stbuf->size = meta.size;
+	stbuf->atime = meta.atime;
+	stbuf->ctime = meta.ctime;
+	stbuf->mtime = meta.mtime;
+	stbuf->ino = meta.ino;
+
+    return -ENOENT;
 }
 
 int fs_utimens (const char *path, const struct timespec ts[2], struct fuse_file_info *fi) {
@@ -26,6 +40,12 @@ int fs_utimens (const char *path, const struct timespec ts[2], struct fuse_file_
 }
 
 int fs_chmod (const char *path, mode_t mode, struct fuse_file_info *fi) {
+	struct metadata meta;
+    int ind = inode_finder(path);	
+
+	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
+	meta.mode = mode;
+	int nw1 = pwrite(fd, &meta, sizeof(meta), (off_t) ind);
 
     return 0;
 }
@@ -86,8 +106,8 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
     int p_id = inode_finder(P_path);	
 	int ind = indode_finder(oldpath);
 
-	pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
-    pread(fd,(char*)&p_e,sizeof(p_e),p_meta.data_ptr);
+	pread(fd,&p_meta,sizeof(p_meta),p_id);
+    pread(fd,&p_e,sizeof(p_e),p_meta.data_ptr);
 
 	map<string,int>::iterator it;
     for(it = map.begin(); it!=map.end(); it++){
@@ -97,14 +117,22 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 			break;
         }
 	}
-
+	int nw1 = pwrite(fd, &p_e, sizeof(p_e), (off_t) p_meta.data_ptr);
 
 	return 0;
 }
 
 int fs_access (const char *path, int mask) {
 
-	return 0;
+	struct metadata meta;
+    int ind = inode_finder(path);	
+
+	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
+	if (mask == meta.mode){
+			return 0;
+	}
+	
+	return -1;
 }
 
 int fs_symlink (const char *from, const char *to) {
