@@ -43,16 +43,17 @@ int fs_mkdir (const char *path, mode_t mode) {
 	//traverse implement
 
 	struct metadata p_meta;
-	struct dir_entry e;
+	struct dir_entry p_e;
+	struct dir_entry my_e;
 	int p_id = inode_finder(P_path);
 
 	pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
-	pread(fd,(char*)&e,sizeof(e),p_meta.data_ptr);
+	pread(fd,(char*)&p_e,sizeof(p_e),p_meta.data_ptr);
 
-	e.entry.push_back(make_pair(my_name, inode_offset));
+	p_e.entry.push_back(make_pair(my_name, inode_offset));
 	p_meta.count++;
-	P_meta.size++;
-	int P_D = pwrite(fd, e, sizeof(struct dir_entry), (off_t) p_meta.data_ptr);
+	p_meta.size++;
+	int P_D = pwrite(fd, p_e, sizeof(struct dir_entry), (off_t) p_meta.data_ptr);
 	int P_I = pwrite(fd, p_meta, sizeof(struct metadata), (off_t) p_id);
 
 	//child_Information
@@ -67,12 +68,13 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.mtime = 33;
 	m.ino = inode_offset;
 	m.data_ptr = data_block_offset;
-	m.inode_bitmap_ptr = inode_bitmap_offset;
 	m.data_bitmap_ptr = data_bitmap_offset;
 	m.count = 0;
 
 	int nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) inode_bitmap_offset);
 	int nw2 = pwrite(fd, m, INODE_SIZE, (off_t) inode_offset);
+	int nw3 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) data_bitmap_offset);
+	int nw4 = pwrite(fd, my_e, sizeof(my_e), (off_t) data_block_offset);
 
 	inode_bitmap_offset += BITMAP_SIZE;
 	inode_offset += INODE_SIZE;
@@ -144,9 +146,10 @@ int fs_rmdir (const char *path) {
 
 		//parent data change
 		map<string,int>::iterator it;
-		for(it = map.begin();it!=map.end();i++){
+		for(it = map.begin(); it!=map.end(); it++){
 			if(it == e.entry.find(my_name)){
 				e.entry.erase(my_name);
+				break;
 			}
 		}
 
