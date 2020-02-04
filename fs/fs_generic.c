@@ -36,8 +36,70 @@ int fs_chown (const char *path, uid_t uid, gid_t gid, struct fuse_file_info *fi)
 }
 
 int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
-    
-    return 0;
+	//oldpath_parentname_myname
+	string Po_path = oldpath;
+	string old_name = oldpath;
+	if(oldpath == "/") {
+	    Po_path = oldpath;
+        old_name = oldpath;
+        root_inumber = inode_base_idx;
+    }
+    else {
+       int size = Po_path.size();
+       int index;
+       for (int i = size; i >= 0; i--){
+           if(Po_path[i] == "/"){
+               index = i;
+               break;
+           }
+       }
+
+	    Po_path.replace(index,size,"");
+	    old_name.replace(0,index+1,"");
+    }
+
+	//newpath_parentname_myname
+	string Pn_path = newpath;
+	string new_name = newpath;
+	if(newpath == "/") {
+	    Pn_path = newpath;
+        my_name = newpath;
+        root_inumber = inode_base_idx;
+    }
+    else {
+       int size = Pn_path.size();
+       int index;
+       for (int i = size; i >= 0; i--){
+           if(P_path[i] == "/"){
+               index = i;
+               break;
+           }
+       }
+
+	    Pn_path.replace(index,size,"");
+	    new_name.replace(0,index+1,"");
+    }
+
+	//name change
+	struct metadata p_meta;
+    struct dir_entry p_e;
+    int p_id = inode_finder(P_path);	
+	int ind = indode_finder(oldpath);
+
+	pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
+    pread(fd,(char*)&p_e,sizeof(p_e),p_meta.data_ptr);
+
+	map<string,int>::iterator it;
+    for(it = map.begin(); it!=map.end(); it++){
+	    if(it == e.entry.find(my_name)){
+	        e.entry.erase(new_name);
+            e.entry.push_back(make_pair(new_name,ind));
+			break;
+        }
+	}
+
+
+	return 0;
 }
 
 int fs_access (const char *path, int mask) {
