@@ -49,20 +49,19 @@ int fs_mkdir (const char *path, mode_t mode) {
 	struct dir_entry temp_e;
 	struct dir_entry my_e;
 	int p_id = inode_finder(temppp);
-	struct disk_offset d_o;
 	
 	pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
 	for(int i = 0; i< p_meta.data_ptr.size();i++){
 		pread(fd,&temp_e,BLOCK_SIZE,p_meta.data_ptr[i]);
 		p_e.entry.insert(temp_e.entry.begin(),temp_e.entry.end());
 	}
-	p_e.entry.insert(make_pair(my_name, d_o.inode_offset));
+	p_e.entry.insert(make_pair(my_name, dioff.inode_offset));
 	p_meta.count++;
 
 	if(p_meta.count % 16 == 0) {
 		p_meta.size++;
-		p_meta.data_ptr.push_back(d_o.data_block_offset);
-		d_o.data_block_offset += BLOCK_SIZE;
+		p_meta.data_ptr.push_back(dioff.data_block_offset);
+		dioff.data_block_offset += BLOCK_SIZE;
 	}
 	int P_I = pwrite(fd, &p_meta, sizeof(struct metadata), (off_t) p_id);
 	
@@ -86,18 +85,18 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.atime = 11;
 	m.ctime = 22;
 	m.mtime = 33;
-	m.ino = d_o.inode_offset;
-	m.data_ptr[0] = d_o.data_block_offset;
-	m.data_bitmap_ptr[0] = d_o.data_bitmap_offset;
+	m.ino = dioff.inode_offset;
+	m.data_ptr[0] = dioff.data_block_offset;
+	m.data_bitmap_ptr[0] = dioff.data_bitmap_offset;
 	m.count = 0;
 
-	int nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) d_o.inode_bitmap_offset);
-	int nw2 = pwrite(fd, &m, INODE_SIZE, (off_t) d_o.inode_offset);
+	int nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) dioff.inode_bitmap_offset);
+	int nw2 = pwrite(fd, &m, INODE_SIZE, (off_t) dioff.inode_offset);
 
-	d_o.inode_bitmap_offset += BITMAP_SIZE;
-	d_o.inode_offset += INODE_SIZE;
-	d_o.data_bitmap_offset += BITMAP_SIZE;
-	d_o.data_block_offset += BLOCK_SIZE;
+	dioff.inode_bitmap_offset += BITMAP_SIZE;
+	dioff.inode_offset += INODE_SIZE;
+	dioff.data_bitmap_offset += BITMAP_SIZE;
+	dioff.data_block_offset += BLOCK_SIZE;
 
 	return 0;
 }
