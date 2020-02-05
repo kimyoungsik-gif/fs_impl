@@ -19,15 +19,12 @@ int fs_getattr (const char *path, struct stat *stbuf, struct fuse_file_info *fi)
     int ind = inode_finder(path);	
 
 	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
-	stbuf->mode = meta.mode;
-	stbuf->nlink = meta.nlink;
-	stbuf->uid = meta.uid;
-	stbuf->gid = meta.gid;
-	stbuf->size = meta.size;
-	stbuf->atime = meta.atime;
-	stbuf->ctime = meta.ctime;
-	stbuf->mtime = meta.mtime;
-	stbuf->ino = meta.ino;
+	stbuf->st_mode = meta.mode;
+	stbuf->st_nlink = meta.nlink;
+	stbuf->st_uid = meta.uid;
+	stbuf->st_gid = meta.gid;
+	stbuf->st_size = meta.size;
+	stbuf->st_ino = meta.ino;
 
     return -ENOENT;
 }
@@ -89,14 +86,14 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 	string new_name = newpath;
 	if(newpath == "/") {
 	    Pn_path = newpath;
-        my_name = newpath;
+        new_name = newpath;
         root_inumber = inode_base_idx;
     }
     else {
        int size = Pn_path.size();
        int index;
        for (int i = size; i >= 0; i--){
-           if(P_path[i] == "/"){
+           if(Pn_path[i] == "/"){
                index = i;
                break;
            }
@@ -109,7 +106,7 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 	//name change
 	struct metadata p_meta;
     struct dir_entry p_e;
-    int p_id = inode_finder(P_path);	
+    int p_id = inode_finder(Pn_path);	
 	int ind = indode_finder(oldpath);
 
 	pread(fd,&p_meta,sizeof(p_meta),p_id);

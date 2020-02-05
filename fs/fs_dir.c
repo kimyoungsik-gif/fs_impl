@@ -57,11 +57,11 @@ int fs_mkdir (const char *path, mode_t mode) {
 	if(p_meta.count% 16 == 0) {
 		P_meta.size++;
 		p_meta.data_ptr.push_back(data_block_offset);
-		int P_D = pwrite(fd, e, sizeof(struct dir_entry), (off_t) p.meta.data_ptr[size-1]);
+		int P_D = pwrite(fd, &e, sizeof(struct dir_entry), (off_t) p.meta.data_ptr[size-1]);
 		data_block_offset += BLOCK_SIZE;
 
 	}
-	int P_I = pwrite(fd, p_meta, sizeof(struct metadata), (off_t) p_id);
+	int P_I = pwrite(fd, &p_meta, sizeof(struct metadata), (off_t) p_id);
 
 	//child_Information
 	struct metadata m;
