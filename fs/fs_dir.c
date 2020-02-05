@@ -100,8 +100,9 @@ int fs_readdir (const char *path, void *buf, fuse_fill_dir_t filler, off_t off, 
 int fs_rmdir (const char *path) {
 	struct metadata m;
 	char* nobitmap = "0";
+	char* temp = (char*)path;
 
-	int offset = inode_finder(path);
+	int offset = inode_finder(temp);
 	pread(fd,m,sizeof(m), offset);
 
 	if(m.conut != 0) {
