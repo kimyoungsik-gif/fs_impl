@@ -152,36 +152,39 @@ int fs_rmdir (const char *path) {
 		char* temppp;
 		strcpy(temppp,P_path.c_str());
 		struct metadata p_meta;
-		struct dir_entry e;
+		struct dir_entry p_e;
+		struct dir_entry temp_e;
 		int p_id = inode_finder(temppp);
-
-		pread(fd,&p_meta,sizeof(p_meta),p_id);
-		pread(fd,&e,sizeof(e),p_meta.data_ptr);
-		P_meta.count--;
-		P_meta.size--;
-
-		//bitmap free allocation please.
-		inode_bitmap_ofs = inode_bitmap_base_idx + ((p_id - inode_base_idx)/INODE_SIZE);
-		int nw1 = pwrite(fd,nobitmap,BITMAP_SIZE,(off_t) inode_bitmap_ofs);
-
-		for(int  i = 0; i< p_meta.data_ptr.size(); i++) {
-
-			int cur_ptr = p_meta.data_ptr.begin() + i;
-			data_bitmap_ofs = data_bitmap_base_idx + (( cur_ptr - inode_base_idx)/BLOCK_SIZE);
-			int nw2 = pwrite(fd,nobitmap,BITMAP_SIZE,(off_t) data_bitmap_ofs);
-
+		
+		for(int i = 0; i< p_meta.data_ptr.size();i++){
+			pread(fd,&temp_e,BLOCK_SIZE,p_meta.data_ptr[i]);
+			p_e.entry.insert(temp_e.entry.begin(),temp_e.entry.end());
 		}
 
+		p_meta.count--;
+		p_meta.size--;
+
+		//bitmap free allocation please.
+		int inode_bitmap_ofs = inode_bitmap_base_idx + ((p_id - inode_base_idx)/INODE_SIZE);
+		int nw1 = pwrite(fd,nobitmap,BITMAP_SIZE,(off_t) inode_bitmap_ofs);
+
 		map<string,int>::iterator it;
-		for(it = map.begin(); it != map.end(); it++) {
-			if(it == e.entry.find(my_name)) {
-				e.entry.erase(my_name);
+    	/*for(it = p_e.entry.begin(); it != p_e.entry.end() ; it++){
+			int data_bitmap_ofs = block_bitmap_base_idx + (( it - inode_base_idx)/BLOCK_SIZE);
+			int nw2 = pwrite(fd,nobitmap,BITMAP_SIZE,(off_t) data_bitmap_ofs);
+		}*/
+
+		for(it = p_e.entry.begin(); it != p_e.entry.end(); it++) {
+			if(it == p_e.entry.find(my_name)) {
+				p_e.entry.erase(my_name);
 				break;
 			}
 		}
+
+		int i = 0;
     	for(it = p_e.entry.begin(); it != p_e.entry.end() ; it++){
 	    	for(int j = 0; j < 16; j++){
-	        	temp_e.insert(*it);
+	        	temp_e.entry.insert(*it);
         	}
         	pwrite(fd,&temp_e,BLOCK_SIZE,p_meta.data_ptr[i]);
         	i++;
