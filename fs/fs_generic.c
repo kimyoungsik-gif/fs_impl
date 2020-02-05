@@ -16,8 +16,8 @@ struct monitor *global_monitor;
 
 int fs_getattr (const char *path, struct stat *stbuf, struct fuse_file_info *fi) {
 	struct metadata meta;
-	char* temp = (char*)path
-		int ind = inode_finder(path);	
+	char* temp = (char*)path;
+	int ind = inode_finder(temp);	
 
 	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
 	stbuf->st_mode = meta.mode;
@@ -32,16 +32,15 @@ int fs_getattr (const char *path, struct stat *stbuf, struct fuse_file_info *fi)
 
 int fs_utimens (const char *path, const struct timespec ts[2], struct fuse_file_info *fi) {
 
-	char* temp = (char*)path
-		return 0;
+	char* temp = (char*)path;
+	return 0;
 
 }
 
 int fs_chmod (const char *path, mode_t mode, struct fuse_file_info *fi) {
 	struct metadata meta;
-
-	char* temp = (char*)path
-		int ind = inode_finder(temp);	
+	char* temp = (char*)path;
+	int ind = inode_finder(temp);	
 
 	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
 	meta.mode = mode;
@@ -52,8 +51,8 @@ int fs_chmod (const char *path, mode_t mode, struct fuse_file_info *fi) {
 
 int fs_chown (const char *path, uid_t uid, gid_t gid, struct fuse_file_info *fi) {
 	struct metadata meta;
-	char* temp = (char*)path
-		int ind = inode_finder(temp);	
+	char* temp = (char*)path;
+	int ind = inode_finder(temp);	
 	fi->fh = ind;
 
 	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
@@ -65,21 +64,21 @@ int fs_chown (const char *path, uid_t uid, gid_t gid, struct fuse_file_info *fi)
 
 int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 	//oldpath_parentname_myname
-	char* old = (char*)oldpath
-		char* new = (char*)newpath
-		string Po_path = old;
-	string old_name = old;
+	char* oldp = (char*)oldpath;
+	char* newp = (char*)newpath;
+	string Po_path(oldp);
+	string old_name(oldp);
 
 	if(oldpath == "/") {
-		Po_path = old;
-		old_name = old;
+		Po_path = oldp;
+		old_name = oldp;
 		root_inumber = inode_base_idx;
 	}
 	else {
 		int size = Po_path.size();
 		int index;
 		for (int i = size; i >= 0; i--){
-			if(Po_path[i] == "/"){
+			if(Po_path[i] == '/'){
 				index = i;
 				break;
 			}
@@ -90,18 +89,16 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 	}
 
 	//newpath_parentname_myname
-	string Pn_path = new;
-	string new_name = new;
+	string Pn_path(newp);
+	string new_name(newp);
 	if(newpath == "/") {
-		Pn_path = new;
-		new_name = new;
 		root_inumber = inode_base_idx;
 	}
 	else {
 		int size = Pn_path.size();
 		int index;
 		for (int i = size; i >= 0; i--){
-			if(Pn_path[i] == "/"){
+			if(Pn_path[i] == '/'){
 				index = i;
 				break;
 			}
@@ -112,23 +109,39 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 	}
 
 	//name change
+	char* temppp;
+	strcpy(temppp,Pn_path.c_str());
 	struct metadata p_meta;
+	struct dir_entry temp_e;
     struct dir_entry p_e;
-    int p_id = inode_finder(Pn_path);	
-	int ind = inode_finder(oldpath);
+    int p_id = inode_finder(temppp);	
+	int ind = inode_finder(oldp);
 
 	pread(fd,&p_meta,sizeof(p_meta),p_id);
-	pread(fd,&p_e,sizeof(p_e),p_meta.data_ptr);
+	
+	for(int i = 0; i< p_meta.data_ptr.size();i++){
+        pread(fd,&temp_e,BLOCK_SIZE,p_meta.data_ptr[i]);
+		p_e.entry.insert(temp_e.entry.begin(),temp_e.entry.end());
+    }
+
 
 	map<string,int>::iterator it;
-    for(it = p_e.entry.begin(); it!=p_e.entry.end(); it++){
+    for(it = p_e.entry.begin(); it != p_e.entry.end(); it++){
 	    if(it == p_e.entry.find(old_name)){
 	        p_e.entry.erase(old_name);
             p_e.entry.insert(make_pair(new_name,ind));
 			break;
 		}
 	}
-	int nw1 = pwrite(fd, &p_e, sizeof(p_e), (off_t) p_meta.data_ptr);
+
+	int i = 0;
+	for(it = p_e.entry.begin(); it != p_e.entry.end() ; it++){
+        for(int j = 0; j < 16; j++){
+			temp_e.entry.insert(*it);
+		}
+		pwrite(fd,&temp_e,BLOCK_SIZE,p_meta.data_ptr[i]);
+		i++;
+	}
 
 	return 0;
 }
@@ -136,8 +149,8 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 int fs_access (const char *path, int mask) {
 
 	struct metadata meta;
-	char* temp = (char*) path
-		int ind = inode_finder(temp);	
+	char* temp = (char*) path;
+	int ind = inode_finder(temp);	
 
 	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
 	if (mask == meta.mode){

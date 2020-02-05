@@ -34,7 +34,7 @@ int fs_create (const char *path, mode_t mode, struct fuse_file_info *fi) {
         int size = P_path.size();
         int index;
         for (int i = size; i >= 0; i--){
-        	if(P_path[i] == "/"){
+        	if(P_path[i] == '/'){
             	index = i;
                 break;
             }
@@ -45,18 +45,34 @@ int fs_create (const char *path, mode_t mode, struct fuse_file_info *fi) {
 	}
 	
 	//parent_change
+	char* temppp;
+    strcpy(temppp,P_path.c_str());
 	struct metadata p_meta;
-	struct dir_entry e;
-	int p_id = inode_finder(P_path);
-	
+	struct dir_entry temp_e;
+	struct dir_entry p_e;
+	struct disk_offset d_o;
+	int p_id = inode_finder(temppp);
+
 	pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
-    pread(fd,(char*)&e,sizeof(e),p_meta.data_ptr);
-	
-	e.entry.push_back(make_pair(my_name, inode_offset));
+    for(int i = 0; i< p_meta.data_ptr.size();i++){
+	     pread(fd,&temp_e,BLOCK_SIZE,p_meta.data_ptr[i]);
+         p_e.entry.insert(temp_e.entry.begin(),temp_e.entry.end());
+    }
+ 
+	p_e.entry.insert(make_pair(my_name, d_o.inode_offset));
 	p_meta.count++;
 	p_meta.size++;
-	int P_I = pwrite(fd, p_meta, sizeof(struct metadata), (off_t) p_id);
-	int P_D = pwrite(fd, e, sizeof(struct dir_entry), (off_t) p_meta.data_ptr);
+	int P_I = pwrite(fd, &p_meta, sizeof(struct metadata), (off_t) p_id);
+    
+	map<string,int>::iterator it;
+	int i = 0;
+	for(it = p_e.entry.begin(); it != p_e.entry.end() ; it++){
+	    for(int j = 0; j < 16; j++){
+		    temp_e.entry.insert(*it);
+   		}
+   		pwrite(fd,&temp_e,BLOCK_SIZE,p_meta.data_ptr[i]);
+    	i++;
+    }
 
 	//child_create
 	struct metadata m;
@@ -68,20 +84,19 @@ int fs_create (const char *path, mode_t mode, struct fuse_file_info *fi) {
     m.atime = 11;
     m.ctime = 22;
     m.mtime = 33;
-    m.ino = inode_offset;
-    m.data_ptr = data_block_offset;
-    m.inode_bitmap_ptr = inode_bitmap_offset;
-    m.data_bitmap_ptr = data_bitmap_offset;
+    m.ino = d_o.inode_offset;
+    m.data_ptr[0] = d_o.data_block_offset;
+    m.data_bitmap_ptr[0] = d_o.data_bitmap_offset;
     m.count = 0;
 
-	fi->fh = inode_offset;
-	int nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) inode_bitmap_offset);
-    int nw2 = pwrite(fd, m, INODE_SIZE, (off_t) inode_offset);
+	fi->fh = d_o.inode_offset;
+	int nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) d_o.inode_bitmap_offset);
+    int nw2 = pwrite(fd, &m, INODE_SIZE, (off_t) d_o.inode_offset);
 
-	inode_bitmap_offset += BITMAP_SIZE;
-    inode_offset += INODE_SIZE;
-    data_bitmap_offset += BITMAP_SIZE;
-    data_block_offset += BLOCK_SIZE;
+	d_o.inode_bitmap_offset += BITMAP_SIZE;
+    d_o.inode_offset += INODE_SIZE;
+    d_o.data_bitmap_offset += BITMAP_SIZE;
+    d_o.data_block_offset += BLOCK_SIZE;
 
 	return 0;
 }
