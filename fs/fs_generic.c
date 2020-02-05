@@ -107,16 +107,16 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 	struct metadata p_meta;
     struct dir_entry p_e;
     int p_id = inode_finder(Pn_path);	
-	int ind = indode_finder(oldpath);
+	int ind = inode_finder(oldpath);
 
 	pread(fd,&p_meta,sizeof(p_meta),p_id);
     pread(fd,&p_e,sizeof(p_e),p_meta.data_ptr);
 
 	map<string,int>::iterator it;
-    for(it = map.begin(); it!=map.end(); it++){
-	    if(it == e.entry.find(my_name)){
-	        e.entry.erase(new_name);
-            e.entry.push_back(make_pair(new_name,ind));
+    for(it = p_e.begin(); it!=p_e.end(); it++){
+	    if(it == p_e.entry.find(old_name)){
+	        p_e.entry.erase(old_name);
+            p_e.entry.push_back(make_pair(new_name,ind));
 			break;
         }
 	}
