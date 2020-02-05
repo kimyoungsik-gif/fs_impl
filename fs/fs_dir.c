@@ -10,7 +10,8 @@
 
 int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
-	int open_dir_inumber = inode_finder(path);
+	char* temp = (char*)path
+	int open_dir_inumber = inode_finder(temp);
 	fi->fh = open_dir_inumber;
 	return 0; 
 }
