@@ -6,59 +6,69 @@
 #include <assert.h>
 #include "fs_dir.h"
 #include "metadata.h"
-
+#include <string>
 
 int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
-	int open_dir_inumber = inode_finder("path");
+	char* temp = (char*)path;
+	int open_dir_inumber = inode_finder(temp);
 	fi->fh = open_dir_inumber;
 	return 0; 
 }
 
 int fs_mkdir (const char *path, mode_t mode) {
-	char* bitmap = "1";
-	string P_path = path;
-	string my_name = path; 
+	char* bitmap = "1";	
+	char* temp = (char*)path;
+	string P_path = temp;
+	string name = temp;
 
 	//parent_Information
 	if(path == "/") {
-		P_path = path;
-		my_name = path;
 		root_inumber = inode_base_idx;
 	}
 	else {	
 		int size = P_path.size();
 		int index;
 		for (int i = size; i >= 0; i--){
-			if(P_path[i] == "/"){
+			if(P_path[i] == '/'){
 				index = i;
 				break;
 			}
 		}
-
 		P_path.replace(index,size,"");
-		my_name.replace(0,index+1,"");
+		name.replace(0,index+1,"");
+		char my_name[252];
+		strcpy(my_name, name.c_str());
 	}
 
 	//traverse implement
 
 	struct metadata p_meta;
-	struct dir_entry p_e;
-	struct dir_entry my_e;
-	int p_id = inode_finder(P_path);
+	struct dir_entry e;
+	int p_id = inode_finder(P_path.c_str());
 
-	pread(fd,&p_meta,sizeof(p_meta),p_id);
-	pread(fd,&p_e,sizeof(p_e),p_meta.data_ptr);
+	pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
+	pread(fd,(char*)&e,sizeof(e),p_meta.data_ptr);
 
-	p_e.entry.push_back(make_pair(my_name, inode_offset));
+	int(i = 0; i < p_meta.data_ptr.size(); ++) {
+
+	}
+	
+	e.entry.push_back(make_pair(my_name, inode_offset));
 	p_meta.count++;
-	p_meta.size++;
-	int P_I = pwrite(fd, &p_meta, sizeof(struct metadata), (off_t) p_id);
-	int P_D = pwrite(fd, &p_e, sizeof(struct dir_entry), (off_t) p_meta.data_ptr);
+
+	if(p_meta.count% 16 == 0) {
+		P_meta.size++;
+		p_meta.data_ptr.push_back(data_block_offset);
+		int P_D = pwrite(fd, e, sizeof(struct dir_entry), (off_t) p.meta.data_ptr[size-1]);
+		data_block_offset += BLOCK_SIZE;
+
+	}
+	int P_I = pwrite(fd, p_meta, sizeof(struct metadata), (off_t) p_id);
 
 	//child_Information
 	struct metadata m;
-	m.mode = 600;
+	m.mode = mode;
 	m.nlink = 1;
 	m.uid = USER_ID;
 	m.gid = GROUP_ID;
@@ -68,13 +78,10 @@ int fs_mkdir (const char *path, mode_t mode) {
 	m.mtime = 33;
 	m.ino = inode_offset;
 	m.data_ptr = data_block_offset;
-	m.data_bitmap_ptr = data_bitmap_offset;
 	m.count = 0;
 
 	int nw1 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) inode_bitmap_offset);
-	int nw2 = pwrite(fd, &m, INODE_SIZE, (off_t) inode_offset);
-	int nw3 = pwrite(fd, bitmap, BITMAP_SIZE, (off_t) data_bitmap_offset);
-	int nw4 = pwrite(fd, &my_e, sizeof(my_e), (off_t) data_block_offset);
+	int nw2 = pwrite(fd, m, INODE_SIZE, (off_t) inode_offset);
 
 	inode_bitmap_offset += BITMAP_SIZE;
 	inode_offset += INODE_SIZE;
@@ -93,8 +100,7 @@ int fs_readdir (const char *path, void *buf, fuse_fill_dir_t filler, off_t off, 
 }
 
 int fs_rmdir (const char *path) {
-	struct metadata m;
-	char* nobitmap = "0";
+	struct metadata *m;
 	int offset=	fs_opendir(path,fi);
 	pread(fd,m,sizeof(m),offset);
 
@@ -102,57 +108,41 @@ int fs_rmdir (const char *path) {
 		printf("directory is not empty!!!!!!!!!"); }
 
 	else{
-		//parent counter,size down
-		string P_path = path;
-		string my_name = path; 
-		if(path == "/") {
-			P_path = path;
-			my_name = path;
-			root_inumber = inode_base_idx;
-		}
-		else {	
-			int size = P_path.size();
-			int index;
-			for (int i = size; i >= 0; i--){
-				if(P_path[i] == "/"){
-					index = i;
-					break;
-				}
-			}
+		//inode
+/*
+		m.mode = mode;
+		m.nlink = 0;
+		m.uid =0;
+		m.gid = 0;
+		m.size = 0;
+		m.atime = 0;
+		m.ctime = 0;
+		m.mtime = 0;
+		m.ino = 0;
+		m.data_ptr = 0;
 
-			P_path.replace(index,size,"");
-			my_name.replace(0,index+1,"");
-		}
+		//bitmap free allocation please. int p_id = fs_opendir(pathhh,NULL);
+     int p_id = fs_opendir(pathhh,NULL);
+    struct metadata p_meta;
+     pread(fd,p_meta,sizeof(struct meatdata),p_id);
+     struct dir_data d;
+     pread(fd,d,sizeof(struct dir_data),p_meta.data_ptr);
+     d.child_name[p_meta.count] = my_name;
+     d.child_inumber[p_meta.count] = inode_offset;
+     p_meta.count++;
+     P_meta.size++;
+     int P_D = pwrite(fd, d, sizeof(struct dir_data), (off_t) p.meta.data_ptr);
+     struct metadata p_meta;
+     pread(fd,p_meta,sizeof(struct meatdata),p_id);
+     struct dir_data d;
+     pread(fd,d,sizeof(struct dir_data),p_meta.data_ptr);
+     d.child_name[p_meta.count] = my_name;
+     d.child_inumber[p_meta.count] = inode_offset;
+     p_meta.count++;
+     P_meta.size++;
+     int P_D = pwrite(fd, d, sizeof(struct dir_data), (off_t) p.meta.data_ptr);
+*/
 
-		struct metadata p_meta;
-		struct dir_entry e;
-		int p_id = inode_finder(P_path);
-
-		pread(fd,(char*)&p_meta,sizeof(p_meta),p_id);
-		pread(fd,(char*)&e,sizeof(e),p_meta.data_ptr);
-
-		p_meta.count--;
-		P_meta.size--;
-
-		//bitmap free allocation please.
-		inode_bitmap_ofs = inode_bitmap_base_idx + ((p_id - inode_base_idx)/INODE_SIZE);
-		int nw1 = pwrite(fd, nobitmap, BITMAP_SIZE, (off_t) inode_bitmap_ofs);
-		
-		for(int i = 0; i < p_meta.data_ptr.size();i++){
-			int cur_ptr = p_meta.data_ptr.begin() + i;
-			data_bitmap_ofs = data_bitmap_base_idx + ((cur_ptr - inode_base_idx)/BLOCK_SIZE);
-			int nw2 = pwrite(fd, nobitmap, BITMAP_SIZE, (off_t) data_bitmap_ofs);
-		}
-
-		//parent data change
-		map<string,int>::iterator it;
-		for(it = map.begin(); it!=map.end(); it++){
-			if(it == e.entry.find(my_name)){
-				e.entry.erase(my_name);
-				break;
-			}
-		}
-		int nw2 = pwrite(fd, &my_e, sizeof(my_e), (off_t) p_meta.data_ptr);
 	}
 
 	return 0;
