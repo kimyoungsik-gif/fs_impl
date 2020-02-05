@@ -15,7 +15,6 @@
 struct monitor *global_monitor;
 
 int fs_getattr (const char *path, struct stat *stbuf, struct fuse_file_info *fi) {
-
 	struct metadata meta;
     int ind = inode_finder(path);	
 
@@ -51,7 +50,14 @@ int fs_chmod (const char *path, mode_t mode, struct fuse_file_info *fi) {
 }
 
 int fs_chown (const char *path, uid_t uid, gid_t gid, struct fuse_file_info *fi) {
-    
+	struct metadata meta;
+    int ind = inode_finder(path);	
+	fi->fh = ind;
+
+	int nr1 = pread(fd, &meta, sizeof(meta), (off_t) ind);
+	meta.uid = uid;
+	meta.gid = gid;
+	int nw1 = pwrite(fd, &meta, sizeof(meta), (off_t) ind);
     return 0;
 }
 
