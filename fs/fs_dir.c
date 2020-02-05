@@ -168,12 +168,12 @@ int fs_rmdir (const char *path) {
 		int inode_bitmap_ofs = inode_bitmap_base_idx + ((p_id - inode_base_idx)/INODE_SIZE);
 		int nw1 = pwrite(fd,nobitmap,BITMAP_SIZE,(off_t) inode_bitmap_ofs);
 
-		map<string,int>::iterator it;
-    	/*for(it = p_e.entry.begin(); it != p_e.entry.end() ; it++){
-			int data_bitmap_ofs = block_bitmap_base_idx + (( it - inode_base_idx)/BLOCK_SIZE);
+    	for(int i = 0; i < p_meta.data_ptr.size() ; i++){
+			int data_bitmap_ofs = block_bitmap_base_idx + (( p_meta.data_ptr[i] - inode_base_idx)/BLOCK_SIZE);
 			int nw2 = pwrite(fd,nobitmap,BITMAP_SIZE,(off_t) data_bitmap_ofs);
-		}*/
+		}
 
+		map<string,int>::iterator it;
 		for(it = p_e.entry.begin(); it != p_e.entry.end(); it++) {
 			if(it == p_e.entry.find(my_name)) {
 				p_e.entry.erase(my_name);
