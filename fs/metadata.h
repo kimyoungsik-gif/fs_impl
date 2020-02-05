@@ -5,7 +5,7 @@
 #include <fuse3/fuse.h>
 #include <sys/stat.h>
 #include "global_types.h"
-#include <list>
+#include <vector>
 
 struct metadata {
     mode_t			mode;
@@ -17,13 +17,13 @@ struct metadata {
     time_t			ctime;
     time_t			mtime;
     uint64_t	        	ino;
-    list<int>			data_ptr; //direct block pointer
-    list<int>			indir_ptr; //indirect block pointer
-    int				count;
+    vector<int>			data_ptr; //direct block pointer
+    vector<int>			indir_ptr; //indirect block pointer
+    int				count;	//file and directory number
     int 			cur_data_offset; //current file offset position
 	int				data_bitmap_ptr;
 
-    list<int>			indir_bitmap_ptr; //indirect block pointer
+    vector<int>			indir_bitmap_ptr; //indirect block pointer
 };
 
 #endif

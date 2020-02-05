@@ -10,7 +10,7 @@
 
 int fs_opendir (const char *path, struct fuse_file_info *fi) {
 	fi->keep_cache = 1;
-	int open_dir_inumber = inode_finder("path");
+	int open_dir_inumber = inode_finder(path);
 	fi->fh = open_dir_inumber;
 	return 0; 
 }
@@ -44,18 +44,22 @@ int fs_mkdir (const char *path, mode_t mode) {
 
 	struct metadata p_meta;
 	struct dir_entry p_e;
+	struct dir_entry temp_e;
 	struct dir_entry my_e;
 	int p_id = inode_finder(P_path);
 
 	pread(fd,&p_meta,sizeof(p_meta),p_id);
-	pread(fd,&p_e,sizeof(p_e),p_meta.data_ptr);
+	for(int i = 0; i < p_meta.data_ptr.size(); i++){
+		pread(fd,&temp_e,BLOCK_SIZE,p_meta.data_ptr[i]);
+		p_e.insert(temp_e.begin().temp_e.end());
+	}
+	
 
 	p_e.entry.push_back(make_pair(my_name, inode_offset));
 	p_meta.count++;
 	p_meta.size++;
 	int P_I = pwrite(fd, &p_meta, sizeof(struct metadata), (off_t) p_id);
-	int P_D = pwrite(fd, &p_e, sizeof(struct dir_entry), (off_t) p_meta.data_ptr);
-
+	
 	//child_Information
 	struct metadata m;
 	m.mode = 600;
