@@ -20,8 +20,8 @@ struct metadata {
     vector<int>			data_ptr; //direct block pointer
     vector<int>			indir_ptr; //indirect block pointer
     int				count;	//file and directory number
-    int 			cur_data_offset; //current file offset position
-	int				data_bitmap_ptr;
+    int 			cur_data_offset; //current file offset position	   
+    int				data_bitmap_ptr;
 
     vector<int>			indir_bitmap_ptr; //indirect block pointer
 };
