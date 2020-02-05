@@ -113,18 +113,31 @@ int fs_rename (const char *oldpath, const char *newpath, unsigned int flags) {
 
 	//name change
 	struct metadata p_meta;
+<<<<<<< HEAD
 	struct dir_entry p_e;
 	int p_id = inode_finder(Pn_path);	
 	int ind = indode_finder(oldpath);
+=======
+    struct dir_entry p_e;
+    int p_id = inode_finder(Pn_path);	
+	int ind = inode_finder(oldpath);
+>>>>>>> 4e608e0a6f30edd1e1cd25ec8db7c89607dbd0d0
 
 	pread(fd,&p_meta,sizeof(p_meta),p_id);
 	pread(fd,&p_e,sizeof(p_e),p_meta.data_ptr);
 
 	map<string,int>::iterator it;
+<<<<<<< HEAD
 	for(it = p_e.begin(); it!=p_e.end(); it++){
 		if(it == p_e.entry.find(old_name)){
 			p_e.entry.erase(old_name);
 			p_e.entry.push_back(make_pair(new_name,ind));
+=======
+    for(it = p_e.entry.begin(); it!=p_e.entry.end(); it++){
+	    if(it == p_e.entry.find(old_name)){
+	        p_e.entry.erase(old_name);
+            p_e.entry.insert(make_pair(new_name,ind));
+>>>>>>> 4e608e0a6f30edd1e1cd25ec8db7c89607dbd0d0
 			break;
 		}
 	}
